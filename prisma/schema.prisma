@@ -12,11 +12,182 @@ model User {
   email     String   @unique
   name      String?
   password  String
-  role      String   @default("student") // "student" or "admin"
+  role      String   @default("student")
   college   String?
   year      String?
-  plan      String   @default("free") // "free", "premium", "annual"
+  plan      String   @default("free")
   mobile    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  bookmarks Bookmark[]
+  notes     UserNote[]
+}
+
+// ─────────────── DIGITAL LIBRARY ───────────────
+
+model LibrarySection {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String
+  icon        String
+  color       String   @default("#3aaa7a")
+  order       Int      @default(0)
+  itemCount   Int      @default(0)
+  books       Book[]
+}
+
+model Book {
+  id          String   @id @default(cuid())
+  sectionId   String
+  title       String
+  author      String
+  description String?
+  edition     String?
+  section     LibrarySection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  chapters    Chapter[]
+}
+
+model Chapter {
+  id        String   @id @default(cuid())
+  bookId    String
+  title     String
+  order     Int      @default(0)
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  aphorisms Aphorism[]
+}
+
+model Aphorism {
+  id                  String   @id @default(cuid())
+  chapterId           String
+  number              Int
+  title               String?
+  originalText        String
+  simplifiedExplanation String?
+  commentary          String?
+  relatedTopics       String?
+  tags                String?
+  chapter             Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+}
+
+model Remedy {
+  id                  String   @id @default(cuid())
+  name                String   @unique
+  sourceAuthors       String?
+  essence             String?
+  mentalGenerals      String?
+  physicalGenerals    String?
+  modalities          String?
+  desiresAversions    String?
+  thermalState        String?
+  sleepDreams         String?
+  miasmaticTendency   String?
+  keynotes            String?
+  remedyRelationships String?
+  compareRemedies     String?
+  clinicalUses        String?
+  dosage              String?
+  rubrics             Rubric[]
+  bookmarks           Bookmark[]
+  notes               UserNote[]
+}
+
+model Rubric {
+  id            String   @id @default(cuid())
+  remedyId      String?
+  chapter       String
+  name          String
+  grade         Int      @default(1)
+  synonyms      String?
+  relatedRubrics String?
+  remedy        Remedy?  @relation(fields: [remedyId], references: [id], onDelete: Cascade)
+}
+
+model ClinicalCase {
+  id                    String   @id @default(cuid())
+  title                 String
+  caseHistory           String
+  characteristicSymptoms String?
+  rubricsUsed           String?
+  remediesConsidered    String?
+  finalRemedy           String?
+  followUpNotes         String?
+  tags                  String?
+  bookmarks             Bookmark[]
+  notes                 UserNote[]
+}
+
+model DiseaseTemplate {
+  id                     String   @id @default(cuid())
+  name                   String
+  importantQuestions     String?
+  characteristicSymptoms String?
+  commonRubrics          String?
+  commonRemedies         String?
+  tags                   String?
+}
+
+model Therapeutic {
+  id          String   @id @default(cuid())
+  disease     String
+  description String?
+  remedies    String?
+  rubrics     String?
+  notes       String?
+  tags        String?
+}
+
+model MiasmNote {
+  id          String   @id @default(cuid())
+  miasm       String
+  title       String
+  description String
+  remedies    String?
+  notes       String?
+}
+
+model BHMSNote {
+  id      String   @id @default(cuid())
+  subject String
+  topic   String
+  content String
+  tags    String?
+}
+
+model QuestionBank {
+  id          String   @id @default(cuid())
+  type        String
+  subject     String
+  question    String
+  options     String?
+  answer      String?
+  explanation String?
+  year        String?
+  tags        String?
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  itemId    String
+  label     String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  remedy    Remedy?  @relation(fields: [itemId], references: [id])
+  case      ClinicalCase? @relation(fields: [itemId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model UserNote {
+  id             String   @id @default(cuid())
+  userId         String
+  type           String
+  itemId         String
+  content        String
+  highlightedText String?
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  remedy         Remedy?  @relation(fields: [itemId], references: [id])
+  case           ClinicalCase? @relation(fields: [itemId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
