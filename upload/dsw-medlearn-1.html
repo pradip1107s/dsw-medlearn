@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DSW Med-Learn | Dr. Sagathiya Wellness Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --forest: #0d2b1f;
+    --sage: #1a4d35;
+    --mint: #2d7a5a;
+    --emerald: #3aaa7a;
+    --gold: #d4a843;
+    --cream: #f5f0e8;
+    --paper: #faf8f3;
+    --ink: #1a1a1a;
+    --muted: #6b7b6e;
+    --glass: rgba(255,255,255,0.06);
+    --glow: rgba(58,170,122,0.15);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--forest);
+    color: var(--cream);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content:'';
+    position:fixed; inset:0; pointer-events:none; z-index:9999;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background: var(--forest); }
+  ::-webkit-scrollbar-thumb { background: var(--emerald); border-radius:2px; }
+
+  /* ══════════════════════════════════════════
+     NAVIGATION
+  ══════════════════════════════════════════ */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    padding: 1.2rem 4rem;
+    display: flex; align-items:center; justify-content:space-between;
+    background: rgba(13,43,31,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(58,170,122,0.1);
+  }
+
+  .nav-logo {
+    display:flex; align-items:center; gap:0.75rem;
+  }
+  .logo-icon {
+    width:38px; height:38px; background: linear-gradient(135deg, var(--emerald), var(--gold));
+    border-radius:10px; display:flex; align-items:center; justify-content:center;
+    font-size:1.2rem;
+  }
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size:1.3rem; font-weight:700;
+    background: linear-gradient(135deg, var(--emerald), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .logo-sub { font-size:0.65rem; color: var(--muted); letter-spacing:0.15em; text-transform:uppercase; }
+
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a {
+    color: rgba(245,240,232,0.7); text-decoration:none;
+    font-size:0.875rem; font-weight:500; letter-spacing:0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--emerald); }
+
+  .nav-actions { display:flex; gap:1rem; }
+  .btn-ghost {
+    padding:0.5rem 1.2rem; border: 1px solid rgba(58,170,122,0.3);
+    color: var(--cream); background:transparent; border-radius:8px;
+    font-size:0.875rem; cursor:pointer; transition:all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-ghost:hover { border-color: var(--emerald); color: var(--emerald); }
+  .btn-primary {
+    padding:0.5rem 1.4rem; background: var(--emerald);
+    color: var(--forest); border:none; border-radius:8px;
+    font-size:0.875rem; font-weight:600; cursor:pointer;
+    transition:all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary:hover { background: var(--gold); transform:translateY(-1px); }
+
+  /* ══════════════════════════════════════════
+     HERO
+  ══════════════════════════════════════════ */
+  .hero {
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding: 8rem 4rem 4rem;
+    position:relative; overflow:hidden;
+    text-align:center;
+  }
+
+  /* Decorative circles */
+  .hero::before {
+    content:''; position:absolute;
+    width:700px; height:700px;
+    background: radial-gradient(circle, rgba(58,170,122,0.12) 0%, transparent 70%);
+    top:-100px; left:-200px; pointer-events:none;
+    animation: drift 8s ease-in-out infinite alternate;
+  }
+  .hero::after {
+    content:''; position:absolute;
+    width:500px; height:500px;
+    background: radial-gradient(circle, rgba(212,168,67,0.08) 0%, transparent 70%);
+    bottom:-50px; right:-100px; pointer-events:none;
+    animation: drift 10s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes drift { from{transform:translate(0,0);} to{transform:translate(30px,20px);} }
+
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:0.5rem;
+    background: rgba(58,170,122,0.1); border: 1px solid rgba(58,170,122,0.25);
+    padding:0.4rem 1rem; border-radius:50px; font-size:0.8rem;
+    color: var(--emerald); margin-bottom:2rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-badge span { font-size:0.7rem; font-family:'JetBrains Mono', monospace; }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight:900; line-height:1.05;
+    margin-bottom:1.5rem;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero h1 em {
+    font-style:normal;
+    background: linear-gradient(135deg, var(--emerald) 0%, var(--gold) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+
+  .hero p {
+    font-size:1.15rem; color:rgba(245,240,232,0.65); max-width:600px;
+    line-height:1.75; margin-bottom:3rem;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-cta {
+    display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .btn-hero {
+    padding:0.9rem 2.2rem; border-radius:12px; font-size:1rem;
+    font-weight:600; cursor:pointer; transition:all 0.25s;
+    font-family:'DM Sans', sans-serif;
+  }
+  .btn-hero-main {
+    background: linear-gradient(135deg, var(--emerald), #2d8a60);
+    color: white; border:none;
+    box-shadow: 0 8px 30px rgba(58,170,122,0.35);
+  }
+  .btn-hero-main:hover { transform:translateY(-3px); box-shadow: 0 12px 40px rgba(58,170,122,0.45); }
+  .btn-hero-sec {
+    background: transparent; color: var(--cream);
+    border: 1px solid rgba(245,240,232,0.2);
+  }
+  .btn-hero-sec:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-stats {
+    display:flex; gap:4rem; margin-top:5rem; justify-content:center;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+  .stat { text-align:center; }
+  .stat-num {
+    font-family:'Playfair Display', serif;
+    font-size:2.2rem; font-weight:700;
+    background: linear-gradient(135deg, var(--emerald), var(--gold));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .stat-label { font-size:0.8rem; color: var(--muted); margin-top:0.2rem; text-transform:uppercase; letter-spacing:0.1em; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ══════════════════════════════════════════
+     SECTION COMMONS
+  ══════════════════════════════════════════ */
+  section { padding: 6rem 4rem; }
+  .section-tag {
+    font-size:0.75rem; font-family:'JetBrains Mono', monospace;
+    color: var(--emerald); letter-spacing:0.2em; text-transform:uppercase;
+    margin-bottom:1rem; display:block;
+  }
+  .section-title {
+    font-family:'Playfair Display', serif;
+    font-size:clamp(2rem,4vw,3rem); font-weight:700;
+    line-height:1.15; margin-bottom:1.2rem;
+  }
+  .section-sub {
+    color:rgba(245,240,232,0.6); font-size:1.05rem; line-height:1.7;
+    max-width:560px;
+  }
+  .section-header { margin-bottom:4rem; }
+
+  /* ══════════════════════════════════════════
+     AI ASSISTANT SECTION
+  ══════════════════════════════════════════ */
+  .ai-section {
+    background: linear-gradient(180deg, var(--forest) 0%, #071a10 100%);
+    position:relative;
+  }
+  .ai-inner {
+    display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; max-width:1200px; margin:0 auto;
+  }
+  .ai-chat-window {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(58,170,122,0.15);
+    border-radius:20px; overflow:hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  }
+  .chat-header {
+    padding:1rem 1.5rem;
+    background: rgba(58,170,122,0.08);
+    border-bottom:1px solid rgba(58,170,122,0.1);
+    display:flex; align-items:center; gap:0.75rem;
+  }
+  .chat-avatar {
+    width:36px; height:36px;
+    background: linear-gradient(135deg, var(--emerald), var(--gold));
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem;
+  }
+  .chat-name { font-weight:600; font-size:0.9rem; }
+  .chat-status { font-size:0.75rem; color:var(--emerald); }
+  .dot-live {
+    width:7px; height:7px; background:var(--emerald);
+    border-radius:50%; display:inline-block; margin-right:4px;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+  .chat-messages { padding:1.5rem; display:flex; flex-direction:column; gap:1rem; min-height:320px; }
+  .msg { max-width:85%; animation: fadeUp 0.5s ease; }
+  .msg-bot {
+    background:rgba(58,170,122,0.1); border:1px solid rgba(58,170,122,0.15);
+    border-radius:4px 16px 16px 16px; padding:0.9rem 1.1rem;
+    font-size:0.88rem; line-height:1.65;
+  }
+  .msg-user {
+    margin-left:auto;
+    background:rgba(212,168,67,0.12); border:1px solid rgba(212,168,67,0.2);
+    border-radius:16px 4px 16px 16px; padding:0.9rem 1.1rem;
+    font-size:0.88rem;
+  }
+  .msg-ref {
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem; color:var(--emerald);
+    margin-top:0.5rem; opacity:0.8;
+  }
+
+  .chat-input-row {
+    padding:1rem 1.5rem;
+    border-top:1px solid rgba(58,170,122,0.1);
+    display:flex; gap:0.75rem; align-items:center;
+  }
+  .chat-input {
+    flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(58,170,122,0.2);
+    border-radius:10px; padding:0.7rem 1rem; color:var(--cream);
+    font-family:'DM Sans',sans-serif; font-size:0.88rem; outline:none;
+    transition:border-color 0.2s;
+  }
+  .chat-input:focus { border-color:var(--emerald); }
+  .chat-input::placeholder { color:rgba(245,240,232,0.3); }
+  .chat-send {
+    width:38px; height:38px; background:var(--emerald); border:none;
+    border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:all 0.2s; font-size:1rem;
+  }
+  .chat-send:hover { background:var(--gold); transform:scale(1.05); }
+
+  .typing-indicator { display:flex; gap:4px; align-items:center; padding:0.5rem 0; }
+  .typing-dot {
+    width:7px; height:7px; background:var(--emerald); border-radius:50%;
+    animation: typingBounce 1.4s infinite ease-in-out;
+  }
+  .typing-dot:nth-child(2) { animation-delay:0.2s; }
+  .typing-dot:nth-child(3) { animation-delay:0.4s; }
+  @keyframes typingBounce { 0%,80%,100%{transform:translateY(0);} 40%{transform:translateY(-6px);} }
+
+  /* ══════════════════════════════════════════
+     MODULES GRID
+  ══════════════════════════════════════════ */
+  .modules-section { background: #071a10; }
+  .modules-grid {
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:1.5rem;
+    max-width:1200px; margin:0 auto;
+  }
+  .module-card {
+    background: var(--glass); border:1px solid rgba(58,170,122,0.1);
+    border-radius:18px; padding:2rem;
+    transition:all 0.3s; position:relative; overflow:hidden;
+    cursor:default;
+  }
+  .module-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background: linear-gradient(90deg, transparent, var(--emerald), transparent);
+    opacity:0; transition:opacity 0.3s;
+  }
+  .module-card:hover { border-color:rgba(58,170,122,0.3); transform:translateY(-4px); background:rgba(58,170,122,0.05); }
+  .module-card:hover::before { opacity:1; }
+  .module-card.featured {
+    background: linear-gradient(135deg, rgba(58,170,122,0.1), rgba(212,168,67,0.05));
+    border-color:rgba(58,170,122,0.25); grid-column:span 1;
+  }
+  .module-icon {
+    width:50px; height:50px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.4rem; margin-bottom:1.2rem;
+    background: rgba(58,170,122,0.1); border:1px solid rgba(58,170,122,0.15);
+  }
+  .module-card h3 { font-size:1.05rem; font-weight:600; margin-bottom:0.5rem; }
+  .module-card p { font-size:0.85rem; color:rgba(245,240,232,0.55); line-height:1.6; }
+  .module-tag {
+    display:inline-block; margin-top:1rem; font-size:0.7rem;
+    font-family:'JetBrains Mono',monospace;
+    padding:0.25rem 0.75rem; border-radius:4px;
+    background:rgba(58,170,122,0.1); color:var(--emerald);
+    border:1px solid rgba(58,170,122,0.2);
+  }
+  .module-tag.premium { background:rgba(212,168,67,0.1); color:var(--gold); border-color:rgba(212,168,67,0.2); }
+
+  /* ══════════════════════════════════════════
+     MCQ EXAM DEMO
+  ══════════════════════════════════════════ */
+  .exam-section {
+    background: var(--forest);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .exam-inner {
+    max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center;
+  }
+  .exam-demo {
+    background:rgba(255,255,255,0.03); border:1px solid rgba(58,170,122,0.15);
+    border-radius:20px; overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  }
+  .exam-topbar {
+    padding:1rem 1.5rem; background:rgba(58,170,122,0.08);
+    border-bottom:1px solid rgba(58,170,122,0.1);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .exam-title-sm { font-size:0.85rem; font-weight:600; }
+  .timer-display {
+    font-family:'JetBrains Mono',monospace; font-size:1.1rem;
+    color:var(--emerald); font-weight:600;
+    background:rgba(58,170,122,0.1); padding:0.3rem 0.9rem; border-radius:8px;
+  }
+  .exam-body { padding:2rem; }
+  .q-count { font-size:0.75rem; font-family:'JetBrains Mono',monospace; color:var(--muted); margin-bottom:0.75rem; }
+  .q-text { font-size:1rem; line-height:1.6; margin-bottom:1.5rem; font-weight:500; }
+  .options-list { display:flex; flex-direction:column; gap:0.75rem; margin-bottom:1.5rem; }
+  .option {
+    padding:0.85rem 1.1rem; border-radius:10px;
+    border:1px solid rgba(58,170,122,0.12);
+    background:rgba(255,255,255,0.02);
+    font-size:0.88rem; cursor:pointer;
+    transition:all 0.2s; display:flex; align-items:center; gap:0.75rem;
+  }
+  .option:hover { border-color:rgba(58,170,122,0.3); background:rgba(58,170,122,0.06); }
+  .option.correct { border-color:var(--emerald); background:rgba(58,170,122,0.12); color:var(--cream); }
+  .option.wrong { border-color:#e05555; background:rgba(224,85,85,0.08); }
+  .option-key {
+    width:26px; height:26px; border-radius:6px;
+    background:rgba(58,170,122,0.1); border:1px solid rgba(58,170,122,0.2);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.75rem; font-family:'JetBrains Mono',monospace;
+    font-weight:600; flex-shrink:0;
+  }
+  .progress-bar-wrap { background:rgba(255,255,255,0.05); border-radius:4px; height:5px; margin-bottom:1rem; }
+  .progress-bar { height:100%; border-radius:4px; background:linear-gradient(90deg, var(--emerald), var(--gold)); transition:width 0.5s ease; }
+  .exam-footer { display:flex; justify-content:space-between; align-items:center; }
+  .btn-next { padding:0.65rem 1.5rem; background:var(--emerald); color:white; border:none; border-radius:9px; font-size:0.88rem; font-weight:600; cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif; }
+  .btn-next:hover { background:var(--gold); color:var(--forest); }
+
+  /* ══════════════════════════════════════════
+     SEARCH ENGINE DEMO
+  ══════════════════════════════════════════ */
+  .search-section { background:#071a10; }
+  .search-inner { max-width:900px; margin:0 auto; text-align:center; }
+  .search-box-wrap { position:relative; margin:2.5rem 0; }
+  .search-box {
+    width:100%; padding:1.1rem 1.5rem 1.1rem 3.5rem;
+    background:rgba(255,255,255,0.04); border:1px solid rgba(58,170,122,0.25);
+    border-radius:14px; color:var(--cream); font-size:1rem;
+    font-family:'DM Sans',sans-serif; outline:none; transition:all 0.2s;
+  }
+  .search-box:focus { border-color:var(--emerald); box-shadow:0 0 0 3px rgba(58,170,122,0.1); }
+  .search-icon { position:absolute; left:1.1rem; top:50%; transform:translateY(-50%); font-size:1.1rem; opacity:0.5; }
+  .search-btn {
+    position:absolute; right:0.6rem; top:50%; transform:translateY(-50%);
+    padding:0.6rem 1.4rem; background:var(--emerald); border:none;
+    border-radius:10px; color:white; font-weight:600; font-size:0.88rem;
+    cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif;
+  }
+  .search-btn:hover { background:var(--gold); color:var(--forest); }
+
+  .search-tags { display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:center; margin-bottom:2.5rem; }
+  .tag-chip {
+    padding:0.4rem 1rem; background:rgba(58,170,122,0.08); border:1px solid rgba(58,170,122,0.15);
+    border-radius:50px; font-size:0.8rem; cursor:pointer; transition:all 0.2s;
+  }
+  .tag-chip:hover { background:rgba(58,170,122,0.15); border-color:var(--emerald); color:var(--emerald); }
+
+  .search-results { display:flex; flex-direction:column; gap:1rem; text-align:left; }
+  .result-card {
+    background:rgba(255,255,255,0.03); border:1px solid rgba(58,170,122,0.1);
+    border-radius:14px; padding:1.3rem 1.5rem; display:flex; gap:1.2rem; align-items:flex-start;
+    transition:all 0.2s;
+  }
+  .result-card:hover { border-color:rgba(58,170,122,0.25); }
+  .result-remedy {
+    font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700;
+    color:var(--emerald); white-space:nowrap;
+    min-width:140px;
+  }
+  .result-detail { flex:1; }
+  .result-title { font-size:0.88rem; font-weight:600; margin-bottom:0.3rem; }
+  .result-text { font-size:0.82rem; color:rgba(245,240,232,0.55); line-height:1.5; }
+  .result-ref {
+    font-family:'JetBrains Mono',monospace; font-size:0.72rem;
+    color:var(--gold); margin-top:0.4rem;
+  }
+
+  /* ══════════════════════════════════════════
+     PRICING
+  ══════════════════════════════════════════ */
+  .pricing-section { background:var(--forest); }
+  .pricing-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:1.5rem; max-width:1000px; margin:0 auto; }
+  .pricing-card {
+    background:rgba(255,255,255,0.03); border:1px solid rgba(58,170,122,0.12);
+    border-radius:20px; padding:2rem; position:relative; transition:all 0.3s;
+  }
+  .pricing-card.popular {
+    border-color:rgba(58,170,122,0.4);
+    background:rgba(58,170,122,0.06);
+    transform:scale(1.03);
+    box-shadow:0 20px 60px rgba(58,170,122,0.15);
+  }
+  .popular-badge {
+    position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+    background:linear-gradient(135deg,var(--emerald),var(--gold));
+    padding:0.3rem 1.2rem; border-radius:50px; font-size:0.72rem;
+    font-weight:700; color:var(--forest); white-space:nowrap;
+  }
+  .plan-name { font-size:0.8rem; font-family:'JetBrains Mono',monospace; color:var(--muted); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:0.75rem; }
+  .plan-price { font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700; line-height:1; }
+  .plan-price span { font-size:1rem; font-family:'DM Sans',sans-serif; color:var(--muted); font-weight:400; }
+  .plan-desc { font-size:0.85rem; color:rgba(245,240,232,0.5); margin:0.75rem 0 1.5rem; }
+  .plan-features { list-style:none; display:flex; flex-direction:column; gap:0.65rem; margin-bottom:2rem; }
+  .plan-features li { font-size:0.85rem; display:flex; gap:0.6rem; align-items:flex-start; color:rgba(245,240,232,0.75); }
+  .plan-features li::before { content:'✓'; color:var(--emerald); font-weight:700; flex-shrink:0; }
+  .plan-features li.locked::before { content:'✗'; color:rgba(255,255,255,0.2); }
+  .plan-features li.locked { color:rgba(245,240,232,0.25); }
+  .btn-plan {
+    width:100%; padding:0.85rem; border-radius:10px; font-size:0.9rem;
+    font-weight:600; cursor:pointer; transition:all 0.2s;
+    font-family:'DM Sans',sans-serif;
+  }
+  .btn-plan-ghost { background:transparent; border:1px solid rgba(58,170,122,0.25); color:var(--cream); }
+  .btn-plan-ghost:hover { border-color:var(--emerald); color:var(--emerald); }
+  .btn-plan-main { background:var(--emerald); color:white; border:none; box-shadow:0 6px 20px rgba(58,170,122,0.3); }
+  .btn-plan-main:hover { background:var(--gold); color:var(--forest); }
+
+  /* ══════════════════════════════════════════
+     MODAL
+  ══════════════════════════════════════════ */
+  .modal-overlay {
+    position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(8px);
+    z-index:1000; display:none; align-items:center; justify-content:center;
+    padding:2rem;
+  }
+  .modal-overlay.open { display:flex; animation:fadeIn 0.2s ease; }
+  @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+  .modal {
+    background:#0d2b1f; border:1px solid rgba(58,170,122,0.2);
+    border-radius:24px; padding:2.5rem; width:100%; max-width:460px;
+    position:relative; animation:slideUp 0.3s ease;
+  }
+  @keyframes slideUp { from{transform:translateY(30px);opacity:0;} to{transform:translateY(0);opacity:1;} }
+  .modal-close {
+    position:absolute; top:1.2rem; right:1.5rem; background:none; border:none;
+    color:var(--muted); font-size:1.4rem; cursor:pointer;
+    transition:color 0.2s;
+  }
+  .modal-close:hover { color:var(--cream); }
+  .modal h2 { font-family:'Playfair Display',serif; font-size:1.6rem; margin-bottom:0.4rem; }
+  .modal-sub { font-size:0.85rem; color:var(--muted); margin-bottom:1.8rem; }
+  .form-group { margin-bottom:1.1rem; }
+  .form-label { display:block; font-size:0.8rem; color:var(--muted); margin-bottom:0.4rem; font-weight:500; }
+  .form-input, .form-select {
+    width:100%; padding:0.75rem 1rem;
+    background:rgba(255,255,255,0.04); border:1px solid rgba(58,170,122,0.15);
+    border-radius:10px; color:var(--cream);
+    font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none;
+    transition:border-color 0.2s;
+  }
+  .form-input:focus, .form-select:focus { border-color:var(--emerald); }
+  .form-select option { background:#0d2b1f; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+  .btn-submit {
+    width:100%; padding:0.9rem; background:var(--emerald); border:none;
+    border-radius:10px; color:white; font-size:0.95rem; font-weight:600;
+    cursor:pointer; transition:all 0.2s; margin-top:0.5rem;
+    font-family:'DM Sans',sans-serif;
+  }
+  .btn-submit:hover { background:var(--gold); color:var(--forest); }
+  .modal-switch { text-align:center; margin-top:1.2rem; font-size:0.83rem; color:var(--muted); }
+  .modal-switch a { color:var(--emerald); text-decoration:none; }
+
+  /* ══════════════════════════════════════════
+     FOOTER
+  ══════════════════════════════════════════ */
+  footer {
+    background:#040f09; padding:4rem 4rem 2rem;
+    border-top:1px solid rgba(58,170,122,0.08);
+  }
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; margin-bottom:3rem; }
+  .footer-brand p { font-size:0.85rem; color:var(--muted); line-height:1.7; margin-top:0.75rem; max-width:280px; }
+  .footer-col h4 { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--emerald); margin-bottom:1rem; font-family:'JetBrains Mono',monospace; }
+  .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:0.6rem; }
+  .footer-col a { color:rgba(245,240,232,0.5); text-decoration:none; font-size:0.85rem; transition:color 0.2s; }
+  .footer-col a:hover { color:var(--emerald); }
+  .footer-bottom { border-top:1px solid rgba(255,255,255,0.05); padding-top:1.5rem; display:flex; justify-content:space-between; align-items:center; }
+  .footer-copy { font-size:0.8rem; color:var(--muted); }
+  .footer-badge { font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--emerald); opacity:0.6; }
+
+  /* ══════════════════════════════════════════
+     ADMIN DASHBOARD
+  ══════════════════════════════════════════ */
+  .admin-overlay {
+    position:fixed; inset:0; background:#060f09; z-index:5000;
+    display:none; flex-direction:column;
+    font-family:'DM Sans',sans-serif;
+  }
+  .admin-overlay.open { display:flex; animation:fadeIn 0.25s ease; }
+
+  .admin-topbar {
+    background:#0a1f12; border-bottom:1px solid rgba(58,170,122,0.15);
+    padding:0.9rem 2rem; display:flex; justify-content:space-between; align-items:center;
+    flex-shrink:0;
+  }
+  .admin-logo { display:flex; align-items:center; gap:0.6rem; }
+  .admin-logo-icon { width:32px; height:32px; background:linear-gradient(135deg,var(--emerald),var(--gold)); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1rem; }
+  .admin-logo-text { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:var(--cream); }
+  .admin-badge { font-size:0.65rem; font-family:'JetBrains Mono',monospace; background:rgba(212,168,67,0.15); border:1px solid rgba(212,168,67,0.3); color:var(--gold); padding:0.2rem 0.6rem; border-radius:4px; }
+  .admin-user { display:flex; align-items:center; gap:1rem; font-size:0.85rem; color:var(--muted); }
+  .btn-logout { padding:0.4rem 1rem; background:transparent; border:1px solid rgba(224,85,85,0.3); color:#e05555; border-radius:7px; font-size:0.8rem; cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif; }
+  .btn-logout:hover { background:rgba(224,85,85,0.1); }
+
+  .admin-body { display:flex; flex:1; overflow:hidden; }
+
+  .admin-sidebar {
+    width:220px; background:#0a1f12; border-right:1px solid rgba(58,170,122,0.1);
+    padding:1.5rem 0; display:flex; flex-direction:column; gap:0.25rem; flex-shrink:0;
+    overflow-y:auto;
+  }
+  .sidebar-section { font-size:0.65rem; font-family:'JetBrains Mono',monospace; color:var(--muted); text-transform:uppercase; letter-spacing:0.2em; padding:0.75rem 1.5rem 0.3rem; }
+  .sidebar-item {
+    display:flex; align-items:center; gap:0.75rem;
+    padding:0.65rem 1.5rem; cursor:pointer; transition:all 0.2s;
+    font-size:0.875rem; color:rgba(245,240,232,0.6); border-left:2px solid transparent;
+  }
+  .sidebar-item:hover { background:rgba(58,170,122,0.05); color:var(--cream); }
+  .sidebar-item.active { background:rgba(58,170,122,0.08); color:var(--emerald); border-left-color:var(--emerald); }
+  .sidebar-item .icon { font-size:1rem; width:20px; text-align:center; }
+
+  .admin-main { flex:1; overflow-y:auto; padding:2rem; background:#071209; }
+
+  .admin-page { display:none; }
+  .admin-page.active { display:block; animation:fadeUp 0.3s ease; }
+
+  .admin-page-title { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; margin-bottom:0.3rem; }
+  .admin-page-sub { font-size:0.83rem; color:var(--muted); margin-bottom:2rem; }
+
+  .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem; }
+  .stat-card {
+    background:rgba(255,255,255,0.03); border:1px solid rgba(58,170,122,0.1);
+    border-radius:14px; padding:1.3rem 1.5rem; transition:all 0.2s;
+  }
+  .stat-card:hover { border-color:rgba(58,170,122,0.25); }
+  .stat-card-label { font-size:0.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem; }
+  .stat-card-num { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; line-height:1; }
+  .stat-card-num.green { color:var(--emerald); }
+  .stat-card-num.gold { color:var(--gold); }
+  .stat-card-num.red { color:#e05555; }
+  .stat-card-change { font-size:0.75rem; color:var(--emerald); margin-top:0.3rem; }
+
+  .admin-table-wrap {
+    background:rgba(255,255,255,0.02); border:1px solid rgba(58,170,122,0.1);
+    border-radius:14px; overflow:hidden;
+  }
+  .admin-table-head { padding:1rem 1.5rem; border-bottom:1px solid rgba(58,170,122,0.08); display:flex; justify-content:space-between; align-items:center; }
+  .admin-table-title { font-size:0.9rem; font-weight:600; }
+  table { width:100%; border-collapse:collapse; }
+  th { font-size:0.72rem; font-family:'JetBrains Mono',monospace; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; padding:0.75rem 1.5rem; text-align:left; border-bottom:1px solid rgba(58,170,122,0.07); }
+  td { font-size:0.83rem; padding:0.9rem 1.5rem; border-bottom:1px solid rgba(255,255,255,0.03); color:rgba(245,240,232,0.8); }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:rgba(58,170,122,0.03); }
+  .badge { display:inline-block; padding:0.2rem 0.65rem; border-radius:4px; font-size:0.7rem; font-weight:600; }
+  .badge-green { background:rgba(58,170,122,0.15); color:var(--emerald); }
+  .badge-gold { background:rgba(212,168,67,0.15); color:var(--gold); }
+  .badge-red { background:rgba(224,85,85,0.15); color:#e05555; }
+  .badge-muted { background:rgba(255,255,255,0.06); color:var(--muted); }
+
+  .admin-actions { display:flex; gap:0.5rem; }
+  .btn-action { padding:0.3rem 0.8rem; border-radius:6px; font-size:0.75rem; cursor:pointer; border:1px solid; transition:all 0.2s; font-family:'DM Sans',sans-serif; }
+  .btn-edit { border-color:rgba(58,170,122,0.3); color:var(--emerald); background:transparent; }
+  .btn-edit:hover { background:rgba(58,170,122,0.1); }
+  .btn-del { border-color:rgba(224,85,85,0.3); color:#e05555; background:transparent; }
+  .btn-del:hover { background:rgba(224,85,85,0.1); }
+
+  .quick-actions { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:2rem; }
+  .quick-btn {
+    background:rgba(255,255,255,0.03); border:1px solid rgba(58,170,122,0.1);
+    border-radius:12px; padding:1.2rem; cursor:pointer; transition:all 0.2s;
+    text-align:center; color:var(--cream);
+  }
+  .quick-btn:hover { border-color:rgba(58,170,122,0.3); background:rgba(58,170,122,0.06); }
+  .quick-btn .q-icon { font-size:1.5rem; margin-bottom:0.5rem; }
+  .quick-btn .q-label { font-size:0.83rem; font-weight:600; }
+  .quick-btn .q-sub { font-size:0.73rem; color:var(--muted); margin-top:0.2rem; }
+
+  /* ══════════════════════════════════════════
+     DEPLOY GUIDE MODAL
+  ══════════════════════════════════════════ */
+  .deploy-modal {
+    background:#0a1f12; border:1px solid rgba(58,170,122,0.2);
+    border-radius:24px; padding:2.5rem; width:100%; max-width:640px;
+    max-height:85vh; overflow-y:auto; position:relative;
+    animation:slideUp 0.3s ease;
+  }
+  .deploy-step {
+    display:flex; gap:1rem; margin-bottom:1.5rem; align-items:flex-start;
+  }
+  .deploy-num {
+    width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--emerald),var(--gold));
+    display:flex; align-items:center; justify-content:center; font-weight:700;
+    font-size:0.85rem; color:var(--forest); flex-shrink:0; margin-top:0.1rem;
+  }
+  .deploy-step-title { font-weight:600; font-size:0.9rem; margin-bottom:0.4rem; }
+  .deploy-step-text { font-size:0.82rem; color:rgba(245,240,232,0.6); line-height:1.6; }
+  .code-snippet {
+    background:rgba(0,0,0,0.4); border:1px solid rgba(58,170,122,0.15);
+    border-radius:8px; padding:0.75rem 1rem; margin-top:0.5rem;
+    font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--emerald);
+    line-height:1.6; white-space:pre-wrap; word-break:break-all;
+  }
+  .deploy-divider { border:none; border-top:1px solid rgba(58,170,122,0.08); margin:1.5rem 0; }
+
+  /* ══════════════════════════════════════════
+     TOAST
+  ══════════════════════════════════════════ */
+  .toast {
+    position:fixed; bottom:2rem; right:2rem; z-index:9000;
+    background:var(--sage); border:1px solid rgba(58,170,122,0.3);
+    border-radius:12px; padding:1rem 1.5rem;
+    display:none; align-items:center; gap:0.75rem;
+    font-size:0.88rem; animation:slideLeft 0.3s ease;
+    box-shadow:0 8px 30px rgba(0,0,0,0.3);
+  }
+  .toast.show { display:flex; }
+  @keyframes slideLeft { from{transform:translateX(40px);opacity:0;} to{transform:translateY(0);opacity:1;} }
+
+  /* ══════════════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════════════ */
+  @media(max-width:900px){
+    nav { padding:1rem 1.5rem; }
+    .nav-links { display:none; }
+    section { padding:4rem 1.5rem; }
+    .ai-inner,.exam-inner { grid-template-columns:1fr; gap:2.5rem; }
+    .modules-grid { grid-template-columns:1fr 1fr; }
+    .pricing-grid { grid-template-columns:1fr; }
+    .pricing-card.popular { transform:none; }
+    .footer-grid { grid-template-columns:1fr 1fr; gap:2rem; }
+    .hero { padding:7rem 1.5rem 3rem; }
+    .hero-stats { gap:2rem; }
+    .form-row { grid-template-columns:1fr; }
+  }
+  @media(max-width:600px){
+    .modules-grid { grid-template-columns:1fr; }
+    .footer-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-icon">🌿</div>
+    <div>
+      <div class="logo-text">DSW Med-Learn</div>
+      <div class="logo-sub">Dr. Sagathiya Wellness</div>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#modules">Modules</a></li>
+    <li><a href="#ai">AI Assistant</a></li>
+    <li><a href="#exam">Exam</a></li>
+    <li><a href="#search">Remedies</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-ghost" onclick="openModal('login')">Login</button>
+    <button class="btn-ghost" style="border-color:rgba(212,168,67,0.4);color:var(--gold);" onclick="openModal('adminlogin')">🔐 Admin</button>
+    <button class="btn-primary" onclick="openModal('signup')">Join Free</button>
+    <button class="btn-ghost" style="border-color:rgba(58,170,122,0.4);font-size:0.78rem;" onclick="openModal('deploy')">🚀 Deploy Guide</button>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero" id="home">
+  <div class="hero-badge">
+    <span>🌱 INDIA'S #1 HOMEOPATHY ED-TECH PLATFORM</span>
+  </div>
+  <h1>Learn Homeopathy<br/>with <em>Intelligence</em></h1>
+  <p>Complete digital ecosystem for BHMS students — AI study assistant, 500+ MCQs, digital library, Kent repertory, case management & live doctor consultations.</p>
+  <div class="hero-cta">
+    <button class="btn-hero btn-hero-main" onclick="openModal('signup')">🚀 Start Learning Free</button>
+    <button class="btn-hero btn-hero-sec" onclick="scrollTo('ai')">Watch AI Demo →</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">MCQ Questions</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">Core Modules</div></div>
+    <div class="stat"><div class="stat-num">5000+</div><div class="stat-label">Remedy Entries</div></div>
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">AI Assistant</div></div>
+  </div>
+</section>
+
+<!-- ══════════════ MODULES ══════════════ -->
+<section class="modules-section" id="modules">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-header">
+      <span class="section-tag">// platform modules</span>
+      <h2 class="section-title">Everything a BHMS Student Needs</h2>
+      <p class="section-sub">From organon to AI — a complete homeopathy learning ecosystem built for modern students.</p>
+    </div>
+    <div class="modules-grid">
+      <div class="module-card featured">
+        <div class="module-icon">🧠</div>
+        <h3>AI Study Assistant</h3>
+        <p>Ask any homeopathy question — get answers with book references from Kent, Boericke & Hahnemann.</p>
+        <span class="module-tag premium">✦ Premium</span>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">📚</div>
+        <h3>Digital Library</h3>
+        <p>Organon of Medicine, Materia Medica Pura, EPMD and more — with bookmarks & highlights.</p>
+        <span class="module-tag">Free Access</span>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">🧪</div>
+        <h3>MCQ Exam Engine</h3>
+        <p>500 questions with timer, auto-scoring, weak topic detection and performance analytics.</p>
+        <span class="module-tag premium">✦ Premium</span>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">🔍</div>
+        <h3>Therapeutic Search</h3>
+        <p>Search by disease, symptom or remedy. Like Google — but for homeopathy. Instant results.</p>
+        <span class="module-tag">Free Access</span>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">📖</div>
+        <h3>Kent Repertory</h3>
+        <p>Full rubric search, reverse search, remedy comparison with weighted grading — software-grade.</p>
+        <span class="module-tag premium">✦ Premium</span>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">🩺</div>
+        <h3>Case Taking System</h3>
+        <p>Digital case sheets with patient info, symptoms, miasm analysis and remedy suggestions.</p>
+        <span class="module-tag premium">✦ Premium</span>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">💬</div>
+        <h3>Student Community</h3>
+        <p>Group chats for Materia Medica, Repertory, Case Discussion & expert doctor rooms.</p>
+        <span class="module-tag premium">✦ Premium</span>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">🏥</div>
+        <h3>Online Consultation</h3>
+        <p>Student-to-patient consultation module with doctor verification and appointment booking.</p>
+        <span class="module-tag">Coming Soon</span>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">📜</div>
+        <h3>Homeopathy History</h3>
+        <p>Hahnemann's life, miasm theory, evolution timeline, classical practitioners database.</p>
+        <span class="module-tag">Free Access</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ AI SECTION ══════════════ -->
+<section class="ai-section" id="ai">
+  <div class="ai-inner">
+    <div>
+      <span class="section-tag">// ai study assistant</span>
+      <h2 class="section-title">Your 24/7 Homeopathy <em style="font-style:normal;color:var(--emerald)">AI Guru</em></h2>
+      <p class="section-sub" style="margin-bottom:2rem;">Not just answers — referenced answers. Every response cites the exact book, chapter and author so you learn correctly.</p>
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div style="display:flex;gap:1rem;align-items:flex-start;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(58,170,122,0.15);border:1px solid rgba(58,170,122,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">📖</div>
+          <div><div style="font-weight:600;font-size:0.9rem;margin-bottom:0.2rem;">Book-Referenced Answers</div><div style="font-size:0.82rem;color:rgba(245,240,232,0.5);">Matches database before answering — Kent, Boericke, Hahnemann</div></div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:flex-start;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(58,170,122,0.15);border:1px solid rgba(58,170,122,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">⚡</div>
+          <div><div style="font-weight:600;font-size:0.9rem;margin-bottom:0.2rem;">Instant Response</div><div style="font-size:0.82rem;color:rgba(245,240,232,0.5);">No hallucinations — only verified homeopathy knowledge</div></div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:flex-start;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(58,170,122,0.15);border:1px solid rgba(58,170,122,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">🎯</div>
+          <div><div style="font-weight:600;font-size:0.9rem;margin-bottom:0.2rem;">Confidence Level</div><div style="font-size:0.82rem;color:rgba(245,240,232,0.5);">Each answer shows confidence % so you know how reliable it is</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-chat-window">
+      <div class="chat-header">
+        <div class="chat-avatar">🌿</div>
+        <div>
+          <div class="chat-name">DSW AI Assistant</div>
+          <div class="chat-status"><span class="dot-live"></span>Online — Homeopathy Mode</div>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg">
+          <div class="msg-bot">
+            Namaskar! 🙏 Main aapka AI Homeopathy Assistant hoon. Koi bhi remedy ya symptom ke baare mein poochiye — main book reference ke saath jawab dunga.
+          </div>
+        </div>
+        <div class="msg" style="margin-left:auto;">
+          <div class="msg-user">Nux Vomica ke kya indications hain?</div>
+        </div>
+        <div class="msg">
+          <div class="msg-bot">
+            <strong>Nux Vomica (Nux-v)</strong> — Irritable, chilly, ambitious personality. Key indications:<br/><br/>
+            🔹 Gastric complaints with constipation<br/>
+            🔹 Oversensitivity to noise, light, odors<br/>
+            🔹 Sedentary workers, mental strain<br/>
+            🔹 Worse: cold, morning, mental exertion<br/>
+            🔹 Better: warmth, rest, evening
+            <div class="msg-ref">📚 Kent Materia Medica — Chapter: Nux Vomica | Confidence: 98%</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" type="text" placeholder="Koi bhi remedy poochiye... e.g. Pulsatilla" onkeydown="if(event.key==='Enter')sendMessage()"/>
+        <button class="chat-send" onclick="sendMessage()">➤</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ EXAM ══════════════ -->
+<section class="exam-section" id="exam">
+  <div class="exam-inner">
+    <div>
+      <span class="section-tag">// mcq exam engine</span>
+      <h2 class="section-title">500 MCQ — <em style="font-style:normal;color:var(--gold)">Exam Ready</em></h2>
+      <p class="section-sub" style="margin-bottom:2rem;">Practice mode, mock test, timed exam — complete with auto-scoring and weak topic analysis after every session.</p>
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div style="background:rgba(58,170,122,0.06);border:1px solid rgba(58,170,122,0.12);border-radius:12px;padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:0.88rem;font-weight:600;">📊 Weak Topic Detection</div>
+          <div style="font-size:0.75rem;font-family:'JetBrains Mono',monospace;color:var(--emerald);">AUTO</div>
+        </div>
+        <div style="background:rgba(212,168,67,0.06);border:1px solid rgba(212,168,67,0.12);border-radius:12px;padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:0.88rem;font-weight:600;">⏱ Custom Timer System</div>
+          <div style="font-size:0.75rem;font-family:'JetBrains Mono',monospace;color:var(--gold);">1 MIN/Q</div>
+        </div>
+        <div style="background:rgba(58,170,122,0.06);border:1px solid rgba(58,170,122,0.12);border-radius:12px;padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:0.88rem;font-weight:600;">📈 Result Analysis</div>
+          <div style="font-size:0.75rem;font-family:'JetBrains Mono',monospace;color:var(--emerald);">DETAILED</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exam-demo">
+      <div class="exam-topbar">
+        <div class="exam-title-sm">🧪 Mock Test — Materia Medica</div>
+        <div class="timer-display" id="timerDisplay">00:45</div>
+      </div>
+      <div class="exam-body">
+        <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar" style="width:20%"></div></div>
+        <div class="q-count" id="qCount">Question 1 of 5</div>
+        <div class="q-text" id="qText">Loading question...</div>
+        <div class="options-list" id="optionsList"></div>
+        <div class="exam-footer">
+          <div style="font-size:0.8rem;color:var(--muted)" id="qStatus">Select an option</div>
+          <button class="btn-next" id="nextBtn" onclick="nextQuestion()" disabled>Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ SEARCH ══════════════ -->
+<section class="search-section" id="search">
+  <div class="search-inner">
+    <div class="section-header" style="text-align:center;">
+      <span class="section-tag">// therapeutic search engine</span>
+      <h2 class="section-title">Google for Homeopathy 🔍</h2>
+      <p class="section-sub" style="margin:0 auto;">Search by disease, symptom combination, or remedy name — get instant clinical results.</p>
+    </div>
+    <div class="search-box-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-box" id="searchBox" type="text" placeholder="e.g. gastritis + anger, or child weeping..." onkeydown="if(event.key==='Enter')doSearch()"/>
+      <button class="search-btn" onclick="doSearch()">Search</button>
+    </div>
+    <div class="search-tags">
+      <span class="tag-chip" onclick="quickSearch('Gastritis anger')">Gastritis + Anger</span>
+      <span class="tag-chip" onclick="quickSearch('Child weeping consolation')">Child Weeping</span>
+      <span class="tag-chip" onclick="quickSearch('Anxiety exam')">Exam Anxiety</span>
+      <span class="tag-chip" onclick="quickSearch('Fever thirst')">Fever + Thirst</span>
+      <span class="tag-chip" onclick="quickSearch('Headache sun')">Sun Headache</span>
+    </div>
+    <div class="search-results" id="searchResults">
+      <div class="result-card">
+        <div class="result-remedy">Nux Vomica</div>
+        <div class="result-detail">
+          <div class="result-title">Gastric complaints with Irritability</div>
+          <div class="result-text">Indicated in gastritis with anger, constipation, oversensitivity. Worse morning, cold. Better warmth, rest.</div>
+          <div class="result-ref">📚 Boericke's Materia Medica | Kent Repertory: MIND — Irritability</div>
+        </div>
+      </div>
+      <div class="result-card">
+        <div class="result-remedy">Pulsatilla</div>
+        <div class="result-detail">
+          <div class="result-title">Mild, Yielding — Consolation Ameliorates</div>
+          <div class="result-text">Weeping child who wants company. Changeable symptoms. Thirstless. Worse warm room, better open air.</div>
+          <div class="result-ref">📚 Kent Materia Medica | Rubric: MIND — Weeping, consolation ameliorates</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ PRICING ══════════════ -->
+<section class="pricing-section" id="pricing">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-header" style="text-align:center;">
+      <span class="section-tag">// subscription plans</span>
+      <h2 class="section-title">Simple, Honest Pricing</h2>
+      <p class="section-sub" style="margin:0 auto;">Start free. Upgrade when you're ready to unlock the full power of DSW Med-Learn.</p>
+    </div>
+    <div class="pricing-grid">
+
+      <div class="pricing-card">
+        <div class="plan-name">Free Plan</div>
+        <div class="plan-price">₹0<span>/month</span></div>
+        <div class="plan-desc">For students just starting out</div>
+        <ul class="plan-features">
+          <li>Basic remedy search</li>
+          <li>50 MCQ questions</li>
+          <li>Digital library (limited)</li>
+          <li>Homeopathy history</li>
+          <li class="locked">AI Study Assistant</li>
+          <li class="locked">Kent Repertory</li>
+          <li class="locked">Case Taking System</li>
+          <li class="locked">Community Chat</li>
+        </ul>
+        <button class="btn-plan btn-plan-ghost" onclick="openModal('signup')">Get Started Free</button>
+      </div>
+
+      <div class="pricing-card popular">
+        <div class="popular-badge">⭐ Most Popular</div>
+        <div class="plan-name">Premium Monthly</div>
+        <div class="plan-price">₹299<span>/month</span></div>
+        <div class="plan-desc">For serious BHMS students</div>
+        <ul class="plan-features">
+          <li>Full 500 MCQ Engine</li>
+          <li>AI Study Assistant (unlimited)</li>
+          <li>Kent Repertory Software</li>
+          <li>Case Taking System</li>
+          <li>Full Digital Library + Downloads</li>
+          <li>Student Community Chat</li>
+          <li>Weak Topic Analysis</li>
+          <li>Doctor Discussion Room</li>
+        </ul>
+        <button class="btn-plan btn-plan-main" onclick="openModal('signup')">Start Premium</button>
+      </div>
+
+      <div class="pricing-card">
+        <div class="plan-name">Annual Plan</div>
+        <div class="plan-price">₹1999<span>/year</span></div>
+        <div class="plan-desc">Best value — save ₹1,589</div>
+        <ul class="plan-features">
+          <li>Everything in Premium</li>
+          <li>Priority Doctor Access</li>
+          <li>Offline PDF Downloads</li>
+          <li>Certificate of Completion</li>
+          <li>Early access to new modules</li>
+          <li>Dedicated study dashboard</li>
+          <li>Video consultation credit</li>
+          <li>1-on-1 mentor sessions</li>
+        </ul>
+        <button class="btn-plan btn-plan-ghost" onclick="openModal('signup')">Get Annual Plan</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo">
+        <div class="logo-icon">🌿</div>
+        <div>
+          <div class="logo-text">DSW Med-Learn</div>
+          <div class="logo-sub">Dr. Sagathiya Wellness</div>
+        </div>
+      </div>
+      <p>India's most comprehensive homeopathy education platform — built for BHMS students, interns and practitioners.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <ul>
+        <li><a href="#">AI Assistant</a></li>
+        <li><a href="#">MCQ Engine</a></li>
+        <li><a href="#">Repertory</a></li>
+        <li><a href="#">Digital Library</a></li>
+        <li><a href="#">Case System</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Learn</h4>
+      <ul>
+        <li><a href="#">Materia Medica</a></li>
+        <li><a href="#">Organon</a></li>
+        <li><a href="#">Miasm Theory</a></li>
+        <li><a href="#">Case Taking</a></li>
+        <li><a href="#">Practitioners</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">About DSW</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">Razorpay Billing</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Dr. Sagathiya Wellness. All rights reserved.</div>
+    <div class="footer-badge">v1.0 — Phase 1 Launch</div>
+  </div>
+</footer>
+
+<!-- ══════════════ ADMIN LOGIN MODAL ══════════════ -->
+<div class="modal-overlay" id="adminloginModal">
+  <div class="modal" style="border-color:rgba(212,168,67,0.25);">
+    <button class="modal-close" onclick="closeModal('adminlogin')">×</button>
+    <div style="text-align:center;margin-bottom:1.5rem;">
+      <div style="width:56px;height:56px;background:linear-gradient(135deg,var(--gold),#b8893a);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 0.75rem;">🔐</div>
+      <h2 style="color:var(--gold);">Admin Login</h2>
+      <div class="modal-sub">Dr. Sagathiya Wellness — Control Panel</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Admin Username</label>
+      <input class="form-input" id="adminUser" type="text" placeholder="admin" style="border-color:rgba(212,168,67,0.2);"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Admin Password</label>
+      <input class="form-input" id="adminPass" type="password" placeholder="••••••••" style="border-color:rgba(212,168,67,0.2);"/>
+    </div>
+    <div id="adminError" style="display:none;background:rgba(224,85,85,0.1);border:1px solid rgba(224,85,85,0.2);border-radius:8px;padding:0.6rem 1rem;font-size:0.82rem;color:#e05555;margin-bottom:0.75rem;">❌ Wrong credentials. Try admin / dsw@2025</div>
+    <button class="btn-submit" style="background:linear-gradient(135deg,var(--gold),#b8893a);color:var(--forest);" onclick="handleAdminLogin()">Enter Admin Panel 🔐</button>
+    <div style="margin-top:1rem;padding:0.75rem;background:rgba(212,168,67,0.06);border:1px solid rgba(212,168,67,0.12);border-radius:8px;">
+      <div style="font-size:0.72rem;font-family:'JetBrains Mono',monospace;color:var(--gold);margin-bottom:0.3rem;">// DEMO CREDENTIALS</div>
+      <div style="font-size:0.8rem;color:rgba(245,240,232,0.6);">Username: <strong style="color:var(--cream);">admin</strong> &nbsp;|&nbsp; Password: <strong style="color:var(--cream);">dsw@2025</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ DEPLOY GUIDE MODAL ══════════════ -->
+<div class="modal-overlay" id="deployModal">
+  <div class="deploy-modal">
+    <button class="modal-close" onclick="closeModal('deploy')">×</button>
+    <div style="margin-bottom:1.5rem;">
+      <span style="font-size:0.72rem;font-family:'JetBrains Mono',monospace;color:var(--emerald);text-transform:uppercase;letter-spacing:0.2em;">// Deploy Guide</span>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin-top:0.4rem;">Google Par Website Kaise Lagayein 🚀</h2>
+      <p style="font-size:0.83rem;color:var(--muted);margin-top:0.3rem;">Free mein — sirf 10 minute lagte hain</p>
+    </div>
+
+    <div class="deploy-step">
+      <div class="deploy-num">1</div>
+      <div>
+        <div class="deploy-step-title">GitHub Account Banao (Free)</div>
+        <div class="deploy-step-text">👉 <strong>github.com</strong> par jaao → Sign Up karo (free hai)<br/>Ek new repository banao — name: <strong>dsw-medlearn</strong></div>
+      </div>
+    </div>
+
+    <div class="deploy-step">
+      <div class="deploy-num">2</div>
+      <div>
+        <div class="deploy-step-title">HTML File Upload Karo</div>
+        <div class="deploy-step-text">Download ki hui <strong>dsw-medlearn.html</strong> file ko rename karo:<br/><strong>index.html</strong> — phir GitHub repository mein upload karo</div>
+        <div class="code-snippet">File name: index.html
+Repository: dsw-medlearn (Public)</div>
+      </div>
+    </div>
+
+    <hr class="deploy-divider"/>
+    <p style="font-size:0.8rem;font-weight:600;color:var(--gold);margin-bottom:1rem;">🌟 Option A — Vercel (BEST — Free Custom Domain)</p>
+
+    <div class="deploy-step">
+      <div class="deploy-num">3A</div>
+      <div>
+        <div class="deploy-step-title">Vercel Par Deploy Karo</div>
+        <div class="deploy-step-text">👉 <strong>vercel.com</strong> → Login with GitHub → "New Project" → Apna <strong>dsw-medlearn</strong> repo select karo → Deploy click karo</div>
+        <div class="code-snippet">Aapki website live hogi:
+https://dsw-medlearn.vercel.app ✅</div>
+      </div>
+    </div>
+
+    <div class="deploy-step">
+      <div class="deploy-num">4A</div>
+      <div>
+        <div class="deploy-step-title">Custom Domain Lagao (Optional)</div>
+        <div class="deploy-step-text">GoDaddy/Namecheap se domain kharido: <strong>dswmedlearn.com</strong> (~₹800/year)<br/>Vercel Settings → Domains → Add karo</div>
+        <div class="code-snippet">https://dswmedlearn.com 🌐</div>
+      </div>
+    </div>
+
+    <hr class="deploy-divider"/>
+    <p style="font-size:0.8rem;font-weight:600;color:var(--emerald);margin-bottom:1rem;">✅ Option B — GitHub Pages (Seedha Free)</p>
+
+    <div class="deploy-step">
+      <div class="deploy-num">3B</div>
+      <div>
+        <div class="deploy-step-title">GitHub Pages Enable Karo</div>
+        <div class="deploy-step-text">Repository → Settings → Pages → Source: <strong>main branch</strong> → Save<br/>2 minute mein website live ho jayegi!</div>
+        <div class="code-snippet">https://yourusername.github.io/dsw-medlearn ✅</div>
+      </div>
+    </div>
+
+    <hr class="deploy-divider"/>
+    <p style="font-size:0.8rem;font-weight:600;color:var(--gold);margin-bottom:1rem;">🔍 Google Par Show Kaise Hogi?</p>
+
+    <div class="deploy-step">
+      <div class="deploy-num">5</div>
+      <div>
+        <div class="deploy-step-title">Google Search Console Submit Karo</div>
+        <div class="deploy-step-text">👉 <strong>search.google.com/search-console</strong> → Add Property → Apna URL dalo → Verify → Sitemap submit karo<br/><br/>⏱ 1–4 hafton mein Google search mein aayegi</div>
+      </div>
+    </div>
+
+    <div style="background:rgba(58,170,122,0.08);border:1px solid rgba(58,170,122,0.15);border-radius:12px;padding:1rem 1.2rem;margin-top:0.5rem;">
+      <div style="font-size:0.8rem;font-weight:600;color:var(--emerald);margin-bottom:0.4rem;">💡 Summary — Sabse Aasaan Tarika:</div>
+      <div style="font-size:0.8rem;color:rgba(245,240,232,0.7);line-height:1.7;">
+        1. github.com → account banao<br/>
+        2. index.html upload karo<br/>
+        3. vercel.com → deploy karo<br/>
+        4. Link share karo — website live! 🎉
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ADMIN DASHBOARD ══════════════ -->
+<div class="admin-overlay" id="adminDashboard">
+  <!-- Top Bar -->
+  <div class="admin-topbar">
+    <div class="admin-logo">
+      <div class="admin-logo-icon">🌿</div>
+      <div class="admin-logo-text">DSW Med-Learn</div>
+      <div class="admin-badge">ADMIN PANEL</div>
+    </div>
+    <div class="admin-user">
+      <span>👤 Dr. Sagathiya &nbsp;|&nbsp; <span style="color:var(--emerald);">● Online</span></span>
+      <button class="btn-logout" onclick="logoutAdmin()">Logout</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+      <div class="sidebar-section">Main</div>
+      <div class="sidebar-item active" onclick="showPage('dashboard',this)"><span class="icon">📊</span>Dashboard</div>
+      <div class="sidebar-item" onclick="showPage('students',this)"><span class="icon">👥</span>Students</div>
+      <div class="sidebar-item" onclick="showPage('mcq',this)"><span class="icon">🧪</span>MCQ Manager</div>
+      <div class="sidebar-item" onclick="showPage('remedies',this)"><span class="icon">💊</span>Remedies DB</div>
+
+      <div class="sidebar-section">Content</div>
+      <div class="sidebar-item" onclick="showPage('library',this)"><span class="icon">📚</span>Library</div>
+      <div class="sidebar-item" onclick="showPage('cases',this)"><span class="icon">🩺</span>Cases</div>
+
+      <div class="sidebar-section">Revenue</div>
+      <div class="sidebar-item" onclick="showPage('premium',this)"><span class="icon">⭐</span>Premium Users</div>
+      <div class="sidebar-item" onclick="showPage('payments',this)"><span class="icon">💳</span>Payments</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+
+      <!-- DASHBOARD PAGE -->
+      <div class="admin-page active" id="page-dashboard">
+        <div class="admin-page-title">Dashboard Overview</div>
+        <div class="admin-page-sub">DSW Med-Learn — Live Platform Stats</div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-label">Total Students</div>
+            <div class="stat-card-num green">1,247</div>
+            <div class="stat-card-change">↑ +43 this week</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Premium Users</div>
+            <div class="stat-card-num gold">312</div>
+            <div class="stat-card-change">↑ +18 this week</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Monthly Revenue</div>
+            <div class="stat-card-num green">₹93,288</div>
+            <div class="stat-card-change">↑ +12% vs last month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">MCQs Attempted</div>
+            <div class="stat-card-num gold">28,450</div>
+            <div class="stat-card-change">↑ +2,100 this week</div>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <div class="quick-btn" onclick="showPage('mcq',document.querySelector('[onclick*=mcq]'))">
+            <div class="q-icon">➕</div>
+            <div class="q-label">Add New MCQ</div>
+            <div class="q-sub">Add questions to exam bank</div>
+          </div>
+          <div class="quick-btn" onclick="showPage('students',document.querySelector('[onclick*=students]'))">
+            <div class="q-icon">👤</div>
+            <div class="q-label">Manage Students</div>
+            <div class="q-sub">View, edit, suspend users</div>
+          </div>
+          <div class="quick-btn" onclick="showPage('remedies',document.querySelector('[onclick*=remedies]'))">
+            <div class="q-icon">💊</div>
+            <div class="q-label">Add Remedy</div>
+            <div class="q-sub">Expand homeopathy database</div>
+          </div>
+          <div class="quick-btn" onclick="showPage('payments',document.querySelector('[onclick*=payments]'))">
+            <div class="q-icon">💰</div>
+            <div class="q-label">View Revenue</div>
+            <div class="q-sub">Razorpay transactions</div>
+          </div>
+          <div class="quick-btn" onclick="showPage('library',document.querySelector('[onclick*=library]'))">
+            <div class="q-icon">📖</div>
+            <div class="q-label">Upload Book</div>
+            <div class="q-sub">Add to digital library</div>
+          </div>
+          <div class="quick-btn" onclick="showPage('cases',document.querySelector('[onclick*=cases]'))">
+            <div class="q-icon">🩺</div>
+            <div class="q-label">Review Cases</div>
+            <div class="q-sub">Student clinical cases</div>
+          </div>
+        </div>
+
+        <div class="admin-table-wrap">
+          <div class="admin-table-head">
+            <div class="admin-table-title">Recent Registrations</div>
+            <button class="btn-action btn-edit" onclick="showPage('students',document.querySelector('[onclick*=students]'))">View All →</button>
+          </div>
+          <table>
+            <thead><tr><th>Name</th><th>College</th><th>Year</th><th>Plan</th><th>Joined</th></tr></thead>
+            <tbody>
+              <tr><td>Dr. Arjun Patel</td><td>NMC Ahmedabad</td><td>3rd Year</td><td><span class="badge badge-gold">Premium</span></td><td>Today</td></tr>
+              <tr><td>Priya Sharma</td><td>HNGU Patan</td><td>Final Year</td><td><span class="badge badge-green">Free</span></td><td>Today</td></tr>
+              <tr><td>Rahul Desai</td><td>GHU Surat</td><td>Intern</td><td><span class="badge badge-gold">Premium</span></td><td>Yesterday</td></tr>
+              <tr><td>Anita Mehta</td><td>SDM Mangalore</td><td>2nd Year</td><td><span class="badge badge-green">Free</span></td><td>Yesterday</td></tr>
+              <tr><td>Kiran Joshi</td><td>Bharati Vidyapeeth</td><td>1st Year</td><td><span class="badge badge-green">Free</span></td><td>2 days ago</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- STUDENTS PAGE -->
+      <div class="admin-page" id="page-students">
+        <div class="admin-page-title">Student Management</div>
+        <div class="admin-page-sub">View and manage all registered students</div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-head">
+            <div class="admin-table-title">All Students (1,247)</div>
+            <div style="display:flex;gap:0.5rem;">
+              <input style="padding:0.4rem 0.8rem;background:rgba(255,255,255,0.05);border:1px solid rgba(58,170,122,0.15);border-radius:7px;color:var(--cream);font-size:0.8rem;outline:none;font-family:'DM Sans',sans-serif;" placeholder="Search student..."/>
+              <button class="btn-action btn-edit">🔍</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Name</th><th>Mobile</th><th>College</th><th>Plan</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="studentsTable">
+              <tr><td>Dr. Arjun Patel</td><td>+91 98765 43210</td><td>NMC Ahmedabad</td><td><span class="badge badge-gold">Premium</span></td><td><span class="badge badge-green">Active</span></td><td class="admin-actions"><button class="btn-action btn-edit" onclick="showToast('Student details opened')">Edit</button><button class="btn-action btn-del" onclick="showToast('Student suspended')">Suspend</button></td></tr>
+              <tr><td>Priya Sharma</td><td>+91 87654 32109</td><td>HNGU Patan</td><td><span class="badge badge-green">Free</span></td><td><span class="badge badge-green">Active</span></td><td class="admin-actions"><button class="btn-action btn-edit" onclick="showToast('Student details opened')">Edit</button><button class="btn-action btn-del" onclick="showToast('Student suspended')">Suspend</button></td></tr>
+              <tr><td>Rahul Desai</td><td>+91 76543 21098</td><td>GHU Surat</td><td><span class="badge badge-gold">Premium</span></td><td><span class="badge badge-green">Active</span></td><td class="admin-actions"><button class="btn-action btn-edit" onclick="showToast('Student details opened')">Edit</button><button class="btn-action btn-del" onclick="showToast('Student suspended')">Suspend</button></td></tr>
+              <tr><td>Anita Mehta</td><td>+91 65432 10987</td><td>SDM Mangalore</td><td><span class="badge badge-green">Free</span></td><td><span class="badge badge-red">Inactive</span></td><td class="admin-actions"><button class="btn-action btn-edit" onclick="showToast('Student details opened')">Edit</button><button class="btn-action btn-del" onclick="showToast('Student deleted')">Delete</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MCQ PAGE -->
+      <div class="admin-page" id="page-mcq">
+        <div class="admin-page-title">MCQ Manager</div>
+        <div class="admin-page-sub">Add, edit and delete exam questions</div>
+        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(58,170,122,0.12);border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;">
+          <div style="font-size:0.88rem;font-weight:600;margin-bottom:1rem;color:var(--emerald);">➕ Add New MCQ</div>
+          <div class="form-group"><label class="form-label">Question</label><input class="form-input" type="text" placeholder="Type the MCQ question..."/></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            <div class="form-group"><label class="form-label">Option A</label><input class="form-input" type="text" placeholder="Option A"/></div>
+            <div class="form-group"><label class="form-label">Option B</label><input class="form-input" type="text" placeholder="Option B"/></div>
+            <div class="form-group"><label class="form-label">Option C</label><input class="form-input" type="text" placeholder="Option C"/></div>
+            <div class="form-group"><label class="form-label">Option D</label><input class="form-input" type="text" placeholder="Option D"/></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;">
+            <div class="form-group"><label class="form-label">Correct Answer</label><select class="form-select"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+            <div class="form-group"><label class="form-label">Topic</label><select class="form-select"><option>Materia Medica</option><option>Organon</option><option>Repertory</option><option>Pharmacy</option></select></div>
+            <div class="form-group"><label class="form-label">Difficulty</label><select class="form-select"><option>Easy</option><option>Medium</option><option>Hard</option></select></div>
+          </div>
+          <button class="btn-submit" style="width:auto;padding:0.65rem 2rem;" onclick="showToast('✅ MCQ added to database!')">Save Question</button>
+        </div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-head"><div class="admin-table-title">Question Bank (500)</div></div>
+          <table>
+            <thead><tr><th>#</th><th>Question</th><th>Topic</th><th>Difficulty</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td>001</td><td>Which remedy is 'King of Anti-psoric remedies'?</td><td><span class="badge badge-muted">MM</span></td><td><span class="badge badge-green">Easy</span></td><td class="admin-actions"><button class="btn-action btn-edit" onclick="showToast('Edit mode opened')">Edit</button><button class="btn-action btn-del" onclick="showToast('Question deleted')">Delete</button></td></tr>
+              <tr><td>002</td><td>Consolation aggravates in which remedy?</td><td><span class="badge badge-muted">MM</span></td><td><span class="badge badge-gold">Medium</span></td><td class="admin-actions"><button class="btn-action btn-edit" onclick="showToast('Edit mode opened')">Edit</button><button class="btn-action btn-del" onclick="showToast('Question deleted')">Delete</button></td></tr>
+              <tr><td>003</td><td>Burning pains relieved by heat is keynote of?</td><td><span class="badge badge-muted">MM</span></td><td><span class="badge badge-green">Easy</span></td><td class="admin-actions"><button class="btn-action btn-edit" onclick="showToast('Edit mode opened')">Edit</button><button class="btn-action btn-del" onclick="showToast('Question deleted')">Delete</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REMEDIES PAGE -->
+      <div class="admin-page" id="page-remedies">
+        <div class="admin-page-title">Remedy Database</div>
+        <div class="admin-page-sub">Manage homeopathy remedy entries</div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-head"><div class="admin-table-title">Remedies (5,000+)</div><button class="btn-action btn-edit" onclick="showToast('Add remedy form opened')">+ Add Remedy</button></div>
+          <table>
+            <thead><tr><th>Remedy</th><th>Key Symptom</th><th>Source</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Nux Vomica</strong></td><td>Gastritis + Anger + Irritability</td><td><span class="badge badge-muted">Kent + Boericke</span></td><td><span class="badge badge-green">Active</span></td><td class="admin-actions"><button class="btn-action btn-edit" onclick="showToast('Edit opened')">Edit</button></td></tr>
+              <tr><td><strong>Pulsatilla</strong></td><td>Weeping + Consolation amel.</td><td><span class="badge badge-muted">Kent MM</span></td><td><span class="badge badge-green">Active</span></td><td class="admin-actions"><button class="btn-action btn-edit" onclick="showToast('Edit opened')">Edit</button></td></tr>
+              <tr><td><strong>Sulphur</strong></td><td>Burning + Untidy + Philosophical</td><td><span class="badge badge-muted">Hahnemann</span></td><td><span class="badge badge-green">Active</span></td><td class="admin-actions"><button class="btn-action btn-edit" onclick="showToast('Edit opened')">Edit</button></td></tr>
+              <tr><td><strong>Arsenicum Album</strong></td><td>Restlessness + Burning + Anxiety</td><td><span class="badge badge-muted">Kent + Boericke</span></td><td><span class="badge badge-green">Active</span></td><td class="admin-actions"><button class="btn-action btn-edit" onclick="showToast('Edit opened')">Edit</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- LIBRARY PAGE -->
+      <div class="admin-page" id="page-library">
+        <div class="admin-page-title">Digital Library</div>
+        <div class="admin-page-sub">Manage books and reading materials</div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-head"><div class="admin-table-title">Library Books</div><button class="btn-action btn-edit" onclick="showToast('Upload book PDF')">+ Upload Book</button></div>
+          <table>
+            <thead><tr><th>Book Title</th><th>Author</th><th>Access</th><th>Downloads</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td>Organon of Medicine</td><td>Samuel Hahnemann</td><td><span class="badge badge-green">Free</span></td><td>2,341</td><td class="admin-actions"><button class="btn-action btn-edit">Edit</button><button class="btn-action btn-del">Remove</button></td></tr>
+              <tr><td>Kent Materia Medica</td><td>J.T. Kent</td><td><span class="badge badge-gold">Premium</span></td><td>1,892</td><td class="admin-actions"><button class="btn-action btn-edit">Edit</button><button class="btn-action btn-del">Remove</button></td></tr>
+              <tr><td>Boericke's Materia Medica</td><td>William Boericke</td><td><span class="badge badge-green">Free</span></td><td>3,105</td><td class="admin-actions"><button class="btn-action btn-edit">Edit</button><button class="btn-action btn-del">Remove</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CASES PAGE -->
+      <div class="admin-page" id="page-cases">
+        <div class="admin-page-title">Clinical Cases</div>
+        <div class="admin-page-sub">Review student-submitted cases</div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-head"><div class="admin-table-title">Submitted Cases (87)</div></div>
+          <table>
+            <thead><tr><th>Patient</th><th>Submitted By</th><th>Remedy Given</th><th>Review</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td>Patient A (M/35)</td><td>Arjun Patel</td><td>Nux Vomica 30</td><td><span class="badge badge-green">Approved</span></td><td class="admin-actions"><button class="btn-action btn-edit">View</button></td></tr>
+              <tr><td>Patient B (F/28)</td><td>Priya Sharma</td><td>Pulsatilla 200</td><td><span class="badge badge-gold">Pending</span></td><td class="admin-actions"><button class="btn-action btn-edit">Review</button><button class="btn-action btn-del">Reject</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PREMIUM PAGE -->
+      <div class="admin-page" id="page-premium">
+        <div class="admin-page-title">Premium Users</div>
+        <div class="admin-page-sub">Students with active subscriptions</div>
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+          <div class="stat-card"><div class="stat-card-label">Monthly Subscribers</div><div class="stat-card-num gold">248</div></div>
+          <div class="stat-card"><div class="stat-card-label">Annual Subscribers</div><div class="stat-card-num green">64</div></div>
+          <div class="stat-card"><div class="stat-card-label">Churned This Month</div><div class="stat-card-num red">12</div></div>
+        </div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-head"><div class="admin-table-title">Active Subscriptions</div></div>
+          <table>
+            <thead><tr><th>Student</th><th>Plan</th><th>Amount</th><th>Renewal</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Arjun Patel</td><td>Monthly</td><td>₹299</td><td>Jun 6, 2025</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td>Rahul Desai</td><td>Annual</td><td>₹1999</td><td>May 6, 2026</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td>Kiran Joshi</td><td>Monthly</td><td>₹299</td><td>Jun 1, 2025</td><td><span class="badge badge-gold">Expiring Soon</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAYMENTS PAGE -->
+      <div class="admin-page" id="page-payments">
+        <div class="admin-page-title">Payment Transactions</div>
+        <div class="admin-page-sub">Razorpay payment history</div>
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+          <div class="stat-card"><div class="stat-card-label">Total Revenue</div><div class="stat-card-num green">₹4,12,500</div></div>
+          <div class="stat-card"><div class="stat-card-label">This Month</div><div class="stat-card-num gold">₹93,288</div></div>
+          <div class="stat-card"><div class="stat-card-label">Pending Payouts</div><div class="stat-card-num red">₹12,400</div></div>
+        </div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-head"><div class="admin-table-title">Recent Transactions</div></div>
+          <table>
+            <thead><tr><th>Order ID</th><th>Student</th><th>Amount</th><th>Plan</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;">RZP_001234</td><td>Arjun Patel</td><td>₹299</td><td>Monthly</td><td><span class="badge badge-green">Success</span></td></tr>
+              <tr><td style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;">RZP_001235</td><td>Rahul Desai</td><td>₹1999</td><td>Annual</td><td><span class="badge badge-green">Success</span></td></tr>
+              <tr><td style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;">RZP_001236</td><td>Meera Shah</td><td>₹299</td><td>Monthly</td><td><span class="badge badge-red">Failed</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- end admin-main -->
+  </div><!-- end admin-body -->
+</div><!-- end admin-overlay -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('login')">×</button>
+    <h2>Welcome Back 🌿</h2>
+    <div class="modal-sub">Login to your DSW Med-Learn account</div>
+    <div id="loginError" style="display:none;background:rgba(224,85,85,0.1);border:1px solid rgba(224,85,85,0.3);border-radius:8px;padding:0.7rem 1rem;font-size:0.83rem;color:#e05555;margin-bottom:1rem;">❌ Invalid email or password. Try again.</div>
+    <div class="form-group">
+      <label class="form-label">Email / Mobile</label>
+      <input class="form-input" id="loginEmail" type="text" placeholder="your@email.com"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="loginPassword" type="password" placeholder="••••••••"/>
+    </div>
+    <div style="background:rgba(212,168,67,0.07);border:1px solid rgba(212,168,67,0.15);border-radius:8px;padding:0.7rem 1rem;font-size:0.78rem;color:rgba(212,168,67,0.8);margin-bottom:1rem;">
+      🔑 <strong>Admin Login:</strong> admin@dsw.com / admin@123
+    </div>
+    <button class="btn-submit" onclick="handleLogin()">Login to Platform</button>
+    <div class="modal-switch">Don't have account? <a href="#" onclick="switchModal('login','signup')">Register Free →</a></div>
+  </div>
+</div>
+
+<!-- ══════════════ ADMIN DASHBOARD ══════════════ -->
+<div id="adminDashboard" style="display:none;position:fixed;inset:0;z-index:2000;background:#060f08;overflow-y:auto;">
+  <style>
+    .adm-nav{background:#0a1f12;border-bottom:1px solid rgba(58,170,122,0.12);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+    .adm-logo{font-family:'Playfair Display',serif;font-size:1.1rem;background:linear-gradient(135deg,var(--emerald),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .adm-user{display:flex;align-items:center;gap:0.75rem;font-size:0.85rem;}
+    .adm-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--emerald),var(--gold));display:flex;align-items:center;justify-content:center;font-size:0.9rem;}
+    .adm-role{font-size:0.7rem;font-family:'JetBrains Mono',monospace;color:var(--gold);background:rgba(212,168,67,0.1);padding:0.15rem 0.6rem;border-radius:4px;}
+    .adm-logout{padding:0.4rem 1rem;background:rgba(224,85,85,0.1);border:1px solid rgba(224,85,85,0.2);color:#e05555;border-radius:7px;font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+    .adm-logout:hover{background:rgba(224,85,85,0.2);}
+    .adm-body{padding:2rem;max-width:1300px;margin:0 auto;}
+    .adm-welcome{margin-bottom:2rem;}
+    .adm-welcome h1{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:0.3rem;}
+    .adm-welcome p{font-size:0.85rem;color:var(--muted);}
+    .adm-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-bottom:2rem;}
+    .adm-stat{background:rgba(255,255,255,0.03);border:1px solid rgba(58,170,122,0.1);border-radius:14px;padding:1.3rem 1.5rem;transition:all 0.2s;}
+    .adm-stat:hover{border-color:rgba(58,170,122,0.25);background:rgba(58,170,122,0.04);}
+    .adm-stat-label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;font-family:'JetBrains Mono',monospace;margin-bottom:0.5rem;}
+    .adm-stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--emerald),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .adm-stat-sub{font-size:0.75rem;color:var(--emerald);margin-top:0.3rem;}
+    .adm-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:1.5rem;margin-bottom:1.5rem;}
+    .adm-card{background:rgba(255,255,255,0.03);border:1px solid rgba(58,170,122,0.1);border-radius:16px;overflow:hidden;}
+    .adm-card-header{padding:1rem 1.5rem;border-bottom:1px solid rgba(58,170,122,0.08);display:flex;justify-content:space-between;align-items:center;}
+    .adm-card-title{font-size:0.85rem;font-weight:600;}
+    .adm-card-body{padding:1.5rem;}
+    .adm-table{width:100%;border-collapse:collapse;}
+    .adm-table th{font-size:0.72rem;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;padding:0.5rem 0.75rem;text-align:left;border-bottom:1px solid rgba(58,170,122,0.08);}
+    .adm-table td{font-size:0.83rem;padding:0.75rem;border-bottom:1px solid rgba(255,255,255,0.03);color:rgba(245,240,232,0.8);}
+    .adm-table tr:last-child td{border-bottom:none;}
+    .adm-table tr:hover td{background:rgba(58,170,122,0.03);}
+    .badge{display:inline-block;padding:0.2rem 0.65rem;border-radius:4px;font-size:0.7rem;font-family:'JetBrains Mono',monospace;font-weight:600;}
+    .badge-free{background:rgba(107,123,110,0.15);color:var(--muted);}
+    .badge-premium{background:rgba(212,168,67,0.12);color:var(--gold);}
+    .badge-admin{background:rgba(58,170,122,0.12);color:var(--emerald);}
+    .badge-active{background:rgba(58,170,122,0.1);color:var(--emerald);}
+    .badge-inactive{background:rgba(224,85,85,0.1);color:#e05555;}
+    .adm-tabs{display:flex;gap:0.5rem;margin-bottom:2rem;flex-wrap:wrap;}
+    .adm-tab{padding:0.5rem 1.2rem;border-radius:8px;font-size:0.83rem;cursor:pointer;border:1px solid rgba(58,170,122,0.12);background:transparent;color:rgba(245,240,232,0.5);transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+    .adm-tab.active{background:rgba(58,170,122,0.12);border-color:rgba(58,170,122,0.3);color:var(--emerald);}
+    .adm-tab:hover{color:var(--cream);}
+    .quick-action{display:flex;flex-direction:column;gap:0.6rem;}
+    .qa-btn{padding:0.7rem 1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(58,170,122,0.1);border-radius:9px;color:var(--cream);font-size:0.83rem;cursor:pointer;text-align:left;transition:all 0.2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:0.6rem;}
+    .qa-btn:hover{border-color:rgba(58,170,122,0.3);background:rgba(58,170,122,0.05);}
+    .adm-section{display:none;}
+    .adm-section.active{display:block;}
+    .mini-chart{display:flex;align-items:flex-end;gap:4px;height:60px;margin-top:0.5rem;}
+    .bar{background:linear-gradient(to top,var(--emerald),rgba(58,170,122,0.3));border-radius:3px 3px 0 0;flex:1;transition:all 0.3s;}
+    @media(max-width:900px){.adm-stats-row{grid-template-columns:1fr 1fr;}.adm-grid{grid-template-columns:1fr;}.adm-body{padding:1rem;}}
+  </style>
+
+  <!-- Admin Nav -->
+  <div class="adm-nav">
+    <div class="adm-logo">🌿 DSW Admin Panel</div>
+    <div class="adm-user">
+      <div class="adm-avatar">👨‍⚕️</div>
+      <div>
+        <div style="font-size:0.85rem;font-weight:600;">Dr. Sagathiya</div>
+        <div class="adm-role">ADMIN</div>
+      </div>
+      <button class="adm-logout" onclick="adminLogout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="adm-body">
+    <!-- Welcome -->
+    <div class="adm-welcome">
+      <h1>Welcome back, Dr. Sagathiya! 👋</h1>
+      <p id="adminDateTime" style="color:var(--muted);font-size:0.85rem;"></p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="adm-tabs">
+      <button class="adm-tab active" onclick="adminTab('overview',this)">📊 Overview</button>
+      <button class="adm-tab" onclick="adminTab('students',this)">👥 Students</button>
+      <button class="adm-tab" onclick="adminTab('mcq',this)">🧪 MCQ Bank</button>
+      <button class="adm-tab" onclick="adminTab('remedies',this)">💊 Remedies</button>
+      <button class="adm-tab" onclick="adminTab('revenue',this)">💰 Revenue</button>
+    </div>
+
+    <!-- OVERVIEW SECTION -->
+    <div class="adm-section active" id="sec-overview">
+      <div class="adm-stats-row">
+        <div class="adm-stat">
+          <div class="adm-stat-label">Total Students</div>
+          <div class="adm-stat-num">247</div>
+          <div class="adm-stat-sub">↑ +12 this week</div>
+        </div>
+        <div class="adm-stat">
+          <div class="adm-stat-label">Premium Users</div>
+          <div class="adm-stat-num">89</div>
+          <div class="adm-stat-sub">↑ +4 this month</div>
+        </div>
+        <div class="adm-stat">
+          <div class="adm-stat-label">MCQ Attempts Today</div>
+          <div class="adm-stat-num">1,342</div>
+          <div class="adm-stat-sub">↑ Active engagement</div>
+        </div>
+        <div class="adm-stat">
+          <div class="adm-stat-label">Revenue (Month)</div>
+          <div class="adm-stat-num">₹26.6K</div>
+          <div class="adm-stat-sub">↑ +₹3.2K vs last</div>
+        </div>
+      </div>
+
+      <div class="adm-grid">
+        <!-- Recent Students -->
+        <div class="adm-card">
+          <div class="adm-card-header">
+            <div class="adm-card-title">👥 Recent Registrations</div>
+            <span style="font-size:0.75rem;color:var(--emerald);">Last 7 days</span>
+          </div>
+          <div class="adm-card-body" style="padding:0;">
+            <table class="adm-table">
+              <thead><tr><th>Name</th><th>College</th><th>Year</th><th>Plan</th></tr></thead>
+              <tbody>
+                <tr><td>Arjun Mehta</td><td>GHMC, Ahmedabad</td><td>3rd</td><td><span class="badge badge-premium">Premium</span></td></tr>
+                <tr><td>Priya Shah</td><td>JNHM, Surat</td><td>Final</td><td><span class="badge badge-free">Free</span></td></tr>
+                <tr><td>Ravi Patel</td><td>BMH, Vadodara</td><td>2nd</td><td><span class="badge badge-premium">Premium</span></td></tr>
+                <tr><td>Nisha Joshi</td><td>GHMC, Ahmedabad</td><td>Intern</td><td><span class="badge badge-free">Free</span></td></tr>
+                <tr><td>Karan Desai</td><td>VHMC, Rajkot</td><td>1st</td><td><span class="badge badge-premium">Premium</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="adm-card">
+          <div class="adm-card-header"><div class="adm-card-title">⚡ Quick Actions</div></div>
+          <div class="adm-card-body">
+            <div class="quick-action">
+              <button class="qa-btn" onclick="showToast('📝 MCQ Editor khulega Phase 2 mein!')">📝 Add New MCQ Question</button>
+              <button class="qa-btn" onclick="showToast('💊 Remedy form ready hai Phase 2 mein!')">💊 Add Remedy Entry</button>
+              <button class="qa-btn" onclick="showToast('📢 Announcement broadcast hogi!')">📢 Send Announcement</button>
+              <button class="qa-btn" onclick="showToast('📊 Report generate ho rahi hai...')">📊 Export Student Report</button>
+              <button class="qa-btn" onclick="showToast('💰 Razorpay dashboard open karain!')">💰 View Payments</button>
+              <button class="qa-btn" onclick="adminTab('students',document.querySelectorAll(\'.adm-tab\')[1])">👥 Manage Students →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity chart bars -->
+      <div class="adm-card">
+        <div class="adm-card-header"><div class="adm-card-title">📈 Weekly MCQ Activity</div><span style="font-size:0.75rem;color:var(--muted);">This week</span></div>
+        <div class="adm-card-body">
+          <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+            <span style="font-size:0.78rem;color:var(--muted);">Questions attempted per day</span>
+            <span style="font-size:0.78rem;color:var(--emerald);">Peak: 248 on Thursday</span>
+          </div>
+          <div class="mini-chart">
+            <div class="bar" style="height:55%;" title="Mon: 143"></div>
+            <div class="bar" style="height:70%;" title="Tue: 178"></div>
+            <div class="bar" style="height:45%;" title="Wed: 112"></div>
+            <div class="bar" style="height:100%;" title="Thu: 248"></div>
+            <div class="bar" style="height:80%;" title="Fri: 198"></div>
+            <div class="bar" style="height:35%;" title="Sat: 87"></div>
+            <div class="bar" style="height:60%;" title="Sun: 152"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:0.4rem;">
+            <span style="font-size:0.7rem;color:var(--muted);">Mon</span><span style="font-size:0.7rem;color:var(--muted);">Tue</span><span style="font-size:0.7rem;color:var(--muted);">Wed</span><span style="font-size:0.7rem;color:var(--muted);">Thu</span><span style="font-size:0.7rem;color:var(--muted);">Fri</span><span style="font-size:0.7rem;color:var(--muted);">Sat</span><span style="font-size:0.7rem;color:var(--muted);">Sun</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STUDENTS SECTION -->
+    <div class="adm-section" id="sec-students">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;">Student Management</h2><p style="font-size:0.83rem;color:var(--muted);">247 total registered students</p></div>
+        <button class="btn-primary" onclick="showToast('Student add form coming in Phase 2!')">+ Add Student</button>
+      </div>
+      <div class="adm-card">
+        <div class="adm-card-body" style="padding:0;">
+          <table class="adm-table">
+            <thead><tr><th>#</th><th>Name</th><th>Email</th><th>College</th><th>Year</th><th>Plan</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>001</td><td>Arjun Mehta</td><td>arjun@email.com</td><td>GHMC Ahmedabad</td><td>3rd Year</td><td><span class="badge badge-premium">Premium</span></td><td><span class="badge badge-active">Active</span></td><td><button class="qa-btn" style="padding:0.3rem 0.7rem;font-size:0.75rem;" onclick="showToast('Student details ready!')">View</button></td></tr>
+              <tr><td>002</td><td>Priya Shah</td><td>priya@email.com</td><td>JNHM Surat</td><td>Final Year</td><td><span class="badge badge-free">Free</span></td><td><span class="badge badge-active">Active</span></td><td><button class="qa-btn" style="padding:0.3rem 0.7rem;font-size:0.75rem;" onclick="showToast('Student details ready!')">View</button></td></tr>
+              <tr><td>003</td><td>Ravi Patel</td><td>ravi@email.com</td><td>BMH Vadodara</td><td>2nd Year</td><td><span class="badge badge-premium">Premium</span></td><td><span class="badge badge-active">Active</span></td><td><button class="qa-btn" style="padding:0.3rem 0.7rem;font-size:0.75rem;" onclick="showToast('Student details ready!')">View</button></td></tr>
+              <tr><td>004</td><td>Nisha Joshi</td><td>nisha@email.com</td><td>GHMC Ahmedabad</td><td>Intern</td><td><span class="badge badge-free">Free</span></td><td><span class="badge badge-inactive">Inactive</span></td><td><button class="qa-btn" style="padding:0.3rem 0.7rem;font-size:0.75rem;" onclick="showToast('Student details ready!')">View</button></td></tr>
+              <tr><td>005</td><td>Karan Desai</td><td>karan@email.com</td><td>VHMC Rajkot</td><td>1st Year</td><td><span class="badge badge-premium">Premium</span></td><td><span class="badge badge-active">Active</span></td><td><button class="qa-btn" style="padding:0.3rem 0.7rem;font-size:0.75rem;" onclick="showToast('Student details ready!')">View</button></td></tr>
+              <tr><td>006</td><td>Meera Trivedi</td><td>meera@email.com</td><td>NHMC Gandhinagar</td><td>Final Year</td><td><span class="badge badge-premium">Premium</span></td><td><span class="badge badge-active">Active</span></td><td><button class="qa-btn" style="padding:0.3rem 0.7rem;font-size:0.75rem;" onclick="showToast('Student details ready!')">View</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MCQ SECTION -->
+    <div class="adm-section" id="sec-mcq">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;">MCQ Question Bank</h2><p style="font-size:0.83rem;color:var(--muted);">500 questions across all topics</p></div>
+        <button class="btn-primary" onclick="showToast('MCQ add form — Phase 2 mein!')">+ Add Question</button>
+      </div>
+      <div class="adm-stats-row" style="grid-template-columns:repeat(4,1fr);">
+        <div class="adm-stat"><div class="adm-stat-label">Materia Medica</div><div class="adm-stat-num">180</div></div>
+        <div class="adm-stat"><div class="adm-stat-label">Repertory</div><div class="adm-stat-num">120</div></div>
+        <div class="adm-stat"><div class="adm-stat-label">Organon</div><div class="adm-stat-num">100</div></div>
+        <div class="adm-stat"><div class="adm-stat-label">Pharmacy</div><div class="adm-stat-num">100</div></div>
+      </div>
+      <div class="adm-card">
+        <div class="adm-card-body" style="padding:0;">
+          <table class="adm-table">
+            <thead><tr><th>#</th><th>Question</th><th>Topic</th><th>Difficulty</th><th>Correct Answer</th></tr></thead>
+            <tbody>
+              <tr><td>001</td><td>King of anti-psoric remedies?</td><td>Materia Medica</td><td><span class="badge badge-free">Easy</span></td><td>Sulphur</td></tr>
+              <tr><td>002</td><td>Consolation aggravates in?</td><td>Materia Medica</td><td><span class="badge" style="background:rgba(58,170,122,0.1);color:var(--emerald);">Medium</span></td><td>Natrum Mur</td></tr>
+              <tr><td>003</td><td>Aphorism of Organon related to similar?</td><td>Organon</td><td><span class="badge badge-premium">Hard</span></td><td>§26</td></tr>
+              <tr><td>004</td><td>Thirst large qty long intervals — remedy?</td><td>Materia Medica</td><td><span class="badge badge-free">Easy</span></td><td>Bryonia</td></tr>
+              <tr><td>005</td><td>Burning pains relieved by heat?</td><td>Materia Medica</td><td><span class="badge badge-free">Easy</span></td><td>Arsenicum Album</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REMEDIES SECTION -->
+    <div class="adm-section" id="sec-remedies">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;">Remedy Database</h2><p style="font-size:0.83rem;color:var(--muted);">5,000+ remedy entries</p></div>
+        <button class="btn-primary" onclick="showToast('Remedy add form — Phase 2!')">+ Add Remedy</button>
+      </div>
+      <div class="adm-card">
+        <div class="adm-card-body" style="padding:0;">
+          <table class="adm-table">
+            <thead><tr><th>Remedy</th><th>Kingdom</th><th>Miasm</th><th>Key Indication</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Nux Vomica</strong></td><td>Plant</td><td>Psora + Sycosis</td><td>Gastric, Irritable, Sedentary</td><td><span class="badge badge-active">Active</span></td></tr>
+              <tr><td><strong>Pulsatilla</strong></td><td>Plant</td><td>Psora</td><td>Mild, Weeping, Thirstless</td><td><span class="badge badge-active">Active</span></td></tr>
+              <tr><td><strong>Sulphur</strong></td><td>Mineral</td><td>Psora</td><td>Burning, Philosophical, Untidy</td><td><span class="badge badge-active">Active</span></td></tr>
+              <tr><td><strong>Arsenicum Album</strong></td><td>Mineral</td><td>Syphilis</td><td>Anxiety, Restless, Burning</td><td><span class="badge badge-active">Active</span></td></tr>
+              <tr><td><strong>Bryonia</strong></td><td>Plant</td><td>Psora</td><td>Worse motion, Dry, Thirsty</td><td><span class="badge badge-active">Active</span></td></tr>
+              <tr><td><strong>Belladonna</strong></td><td>Plant</td><td>Psora</td><td>Sudden, Violent, Fever</td><td><span class="badge badge-active">Active</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVENUE SECTION -->
+    <div class="adm-section" id="sec-revenue">
+      <div style="margin-bottom:1.5rem;"><h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;">Revenue Overview</h2><p style="font-size:0.83rem;color:var(--muted);">Razorpay integration — May 2025</p></div>
+      <div class="adm-stats-row">
+        <div class="adm-stat"><div class="adm-stat-label">This Month</div><div class="adm-stat-num">₹26.6K</div><div class="adm-stat-sub">89 premium users</div></div>
+        <div class="adm-stat"><div class="adm-stat-label">Annual Plans</div><div class="adm-stat-num">₹11.9K</div><div class="adm-stat-sub">6 annual subscribers</div></div>
+        <div class="adm-stat"><div class="adm-stat-label">Monthly Plans</div><div class="adm-stat-num">₹14.7K</div><div class="adm-stat-sub">49 monthly users</div></div>
+        <div class="adm-stat"><div class="adm-stat-label">Total Revenue</div><div class="adm-stat-num">₹88.2K</div><div class="adm-stat-sub">Since launch</div></div>
+      </div>
+      <div class="adm-card">
+        <div class="adm-card-header"><div class="adm-card-title">💳 Recent Transactions</div></div>
+        <div class="adm-card-body" style="padding:0;">
+          <table class="adm-table">
+            <thead><tr><th>Student</th><th>Plan</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Arjun Mehta</td><td>Monthly Premium</td><td>₹299</td><td>05 May 2025</td><td><span class="badge badge-active">Paid</span></td></tr>
+              <tr><td>Karan Desai</td><td>Annual Plan</td><td>₹1,999</td><td>03 May 2025</td><td><span class="badge badge-active">Paid</span></td></tr>
+              <tr><td>Meera Trivedi</td><td>Monthly Premium</td><td>₹299</td><td>02 May 2025</td><td><span class="badge badge-active">Paid</span></td></tr>
+              <tr><td>Ravi Patel</td><td>Monthly Premium</td><td>₹299</td><td>01 May 2025</td><td><span class="badge badge-active">Paid</span></td></tr>
+              <tr><td>Dhruv Bhatt</td><td>Annual Plan</td><td>₹1,999</td><td>28 Apr 2025</td><td><span class="badge badge-active">Paid</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /adm-body -->
+</div><!-- /adminDashboard -->
+<div class="modal-overlay" id="signupModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('signup')">×</button>
+    <h2>Join DSW Med-Learn 🚀</h2>
+    <div class="modal-sub">Create your free student account</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" type="text" placeholder="Dr. Arjun..."/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mobile</label>
+        <input class="form-input" type="tel" placeholder="+91 98765..."/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" placeholder="student@email.com"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Qualification</label>
+        <select class="form-select">
+          <option>BHMS Student</option>
+          <option>Intern</option>
+          <option>Doctor (MD Hom)</option>
+          <option>Practitioner</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Year</label>
+        <select class="form-select">
+          <option>1st Year</option>
+          <option>2nd Year</option>
+          <option>3rd Year</option>
+          <option>Final Year</option>
+          <option>Internship</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">College Name</label>
+      <input class="form-input" type="text" placeholder="Your medical college..."/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" placeholder="Create strong password"/>
+    </div>
+    <button class="btn-submit" onclick="handleSignup()">Create Free Account 🌿</button>
+    <div class="modal-switch">Already registered? <a href="#" onclick="switchModal('signup','login')">Login →</a></div>
+  </div>
+</div>
+
+<!-- ══════════════ TOAST ══════════════ -->
+<div class="toast" id="toast">
+  <span>✅</span>
+  <span id="toastMsg">Action complete!</span>
+</div>
+
+<!-- ══════════════ JS ══════════════ -->
+<script>
+  /* ── MODAL LOGIC ── */
+  function openModal(type){
+    document.getElementById(type+'Modal').classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeModal(type){
+    document.getElementById(type+'Modal').classList.remove('open');
+    document.body.style.overflow='';
+  }
+  function switchModal(from,to){
+    closeModal(from); setTimeout(()=>openModal(to),200);
+  }
+  document.querySelectorAll('.modal-overlay').forEach(el=>{
+    el.addEventListener('click',function(e){ if(e.target===this) { this.classList.remove('open'); document.body.style.overflow=''; } });
+  });
+
+  /* ── TOAST ── */
+  function showToast(msg){
+    const t=document.getElementById('toast');
+    document.getElementById('toastMsg').textContent=msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),3000);
+  }
+
+  /* ── AUTH HANDLERS ── */
+  const USERS = [
+    { email:'admin@dsw.com', password:'admin@123', role:'admin', name:'Dr. Sagathiya' },
+    { email:'student@dsw.com', password:'student123', role:'student', name:'Student User' },
+  ];
+
+  function handleLogin(){
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const pass  = document.getElementById('loginPassword').value.trim();
+    const err   = document.getElementById('loginError');
+
+    const user = USERS.find(u => u.email === email && u.password === pass);
+
+    if(!email || !pass){ err.style.display='block'; err.textContent='❌ Email aur password dono bharein.'; return; }
+
+    if(user){
+      err.style.display='none';
+      closeModal('login');
+      if(user.role === 'admin'){
+        openAdminDashboard(user);
+      } else {
+        showToast('✅ Welcome back, ' + user.name + '! Student dashboard coming soon.');
+      }
+    } else {
+      err.style.display='block';
+      err.textContent='❌ Invalid email or password. Admin: admin@dsw.com / admin@123';
+    }
+  }
+
+  function openAdminDashboard(user){
+    document.getElementById('adminDashboard').style.display='block';
+    document.body.style.overflow='hidden';
+    // Set date
+    const now = new Date();
+    document.getElementById('adminDateTime').textContent =
+      'Today: ' + now.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) +
+      ' | ' + now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  }
+
+  function adminLogout(){
+    document.getElementById('adminDashboard').style.display='none';
+    document.body.style.overflow='';
+    showToast('👋 Logged out successfully.');
+  }
+
+  function adminTab(name, btn){
+    document.querySelectorAll('.adm-section').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.adm-tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('sec-'+name).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function handleSignup(){
+    closeModal('signup');
+    showToast('🎉 Account created! Welcome to DSW Med-Learn.');
+  }
+
+  /* ── SCROLL HELPER ── */
+  function scrollTo(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+
+  /* ── AI CHAT ── */
+  const remedyDB = {
+    'pulsatilla': { name:'Pulsatilla', text:'Mild, yielding, weeps easily. Wants company & consolation. Thirstless. Changeable symptoms. Worse warm room, better open air, cold applications.', ref:'📚 Kent Materia Medica — Pulsatilla | Confidence: 96%' },
+    'sulphur': { name:'Sulphur', text:'Philosophical, selfish, untidy. Burning sensations. Skin dry, itching worse warmth. Hungry at 11am. Worse bathing, standing. Lean & stooped.', ref:'📚 Boericke Materia Medica — Sulphur | Confidence: 97%' },
+    'bryonia': { name:'Bryonia Alba', text:'Worse any motion — wants absolute rest. Dry mucous membranes, great thirst for large quantities. Irritable, stitching pains.', ref:'📚 Kent Materia Medica — Bryonia | Confidence: 95%' },
+    'arsenicum': { name:'Arsenicum Album', text:'Anxious, restless, fastidious. Burning pains relieved by heat. Worse 1–3am. Food poisoning, gastroenteritis. Fear of death.', ref:'📚 Hahnemann — Chronic Diseases | Kent MM | Confidence: 98%' },
+    'belladonna': { name:'Belladonna', text:'Sudden, violent onset. High fever with redness, throbbing, heat. Delirium. Dry skin. No thirst. Pupils dilated. Worse 3pm.', ref:'📚 Boericke + Kent Materia Medica — Belladonna | Confidence: 97%' },
+    'calcarea': { name:'Calcarea Carbonica', text:'Fat, fair, flabby. Sweating on head. Slow development. Craves eggs. Cold & damp worse. Apprehensive, stubborn child.', ref:'📚 Kent Materia Medica — Calcarea Carb | Confidence: 96%' },
+  };
+
+  function sendMessage(){
+    const input=document.getElementById('chatInput');
+    const q=input.value.trim(); if(!q) return;
+    input.value='';
+    appendMsg('user',q);
+
+    const typing=document.createElement('div');
+    typing.className='msg'; typing.id='typing';
+    typing.innerHTML='<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+    document.getElementById('chatMessages').appendChild(typing);
+    scrollChat();
+
+    setTimeout(()=>{
+      typing.remove();
+      let found=null;
+      const lower=q.toLowerCase();
+      for(const key in remedyDB){ if(lower.includes(key)) { found=remedyDB[key]; break; } }
+      if(found){
+        appendMsg('bot',`<strong>${found.name}</strong><br/><br/>${found.text}<div class="msg-ref">${found.ref}</div>`);
+      } else {
+        appendMsg('bot','Yeh query database mein nahi mili abhi. Premium AI assistant mein 5000+ remedies covered hain! 🌿<div class="msg-ref">💡 Try: Pulsatilla, Sulphur, Bryonia, Arsenicum, Belladonna</div>');
+      }
+    },1200);
+  }
+
+  function appendMsg(type,html){
+    const div=document.createElement('div');
+    div.className='msg'+(type==='user'?' style="margin-left:auto;"':'');
+    div.innerHTML=`<div class="msg-${type==='user'?'user':'bot'}">${html}</div>`;
+    document.getElementById('chatMessages').appendChild(div);
+    scrollChat();
+  }
+  function scrollChat(){ const c=document.getElementById('chatMessages'); c.scrollTop=c.scrollHeight; }
+
+  /* ── MCQ ENGINE ── */
+  const questions=[
+    { q:"Which remedy is called 'King of Anti-psoric remedies'?", opts:["Sulphur","Nux Vomica","Lycopodium","Calcarea Carb"], ans:0 },
+    { q:"'Gastritis with anger and irritability' is most characteristic of:", opts:["Pulsatilla","Bryonia","Nux Vomica","Arsenicum"], ans:2 },
+    { q:"Consolation aggravates the patient in which remedy?", opts:["Pulsatilla","Ignatia","Sepia","Natrum Muriaticum"], ans:3 },
+    { q:"Which remedy has 'thirst for large quantities at long intervals'?", opts:["Nux Vomica","Bryonia","Sulphur","Belladonna"], ans:1 },
+    { q:"'Burning pains relieved by heat' is keynote of:", opts:["Arsenicum Album","Apis Mel","Belladonna","Aconite"], ans:0 },
+  ];
+  let curQ=0, answered=false, timerVal=45, timerInterval;
+
+  function loadQuestion(i){
+    answered=false;
+    const q=questions[i];
+    document.getElementById('qCount').textContent=`Question ${i+1} of ${questions.length}`;
+    document.getElementById('qText').textContent=q.q;
+    document.getElementById('progressBar').style.width=((i+1)/questions.length*100)+'%';
+    document.getElementById('qStatus').textContent='Select an option';
+    document.getElementById('nextBtn').disabled=true;
+
+    const ol=document.getElementById('optionsList');
+    ol.innerHTML='';
+    q.opts.forEach((opt,idx)=>{
+      const keys=['A','B','C','D'];
+      const div=document.createElement('div');
+      div.className='option';
+      div.innerHTML=`<div class="option-key">${keys[idx]}</div>${opt}`;
+      div.onclick=()=>selectOption(idx,div);
+      ol.appendChild(div);
+    });
+
+    clearInterval(timerInterval); timerVal=45;
+    updateTimer();
+    timerInterval=setInterval(()=>{
+      timerVal--;
+      updateTimer();
+      if(timerVal<=0){ clearInterval(timerInterval); autoSubmit(); }
+    },1000);
+  }
+
+  function updateTimer(){
+    const s=timerVal;
+    document.getElementById('timerDisplay').textContent=
+      `00:${s<10?'0'+s:s}`;
+    document.getElementById('timerDisplay').style.color=s<=10?'#e05555':'var(--emerald)';
+  }
+
+  function selectOption(idx,el){
+    if(answered) return;
+    answered=true; clearInterval(timerInterval);
+    const correct=questions[curQ].ans;
+    document.querySelectorAll('.option').forEach((opt,i)=>{
+      if(i===correct) opt.classList.add('correct');
+      else if(i===idx && idx!==correct) opt.classList.add('wrong');
+    });
+    document.getElementById('qStatus').textContent=idx===correct?'✅ Correct! Well done.':'❌ Incorrect. See correct answer above.';
+    document.getElementById('nextBtn').disabled=false;
+  }
+
+  function autoSubmit(){
+    if(!answered){ answered=true; const correct=questions[curQ].ans; document.querySelectorAll('.option')[correct].classList.add('correct'); document.getElementById('qStatus').textContent='⏱ Time up! Correct answer shown.'; document.getElementById('nextBtn').disabled=false; }
+  }
+
+  function nextQuestion(){
+    curQ++;
+    if(curQ<questions.length){ loadQuestion(curQ); }
+    else {
+      document.getElementById('qText').textContent='🎉 Mock Test Complete! Your score: 4/5 (80%)';
+      document.getElementById('optionsList').innerHTML='';
+      document.getElementById('qCount').textContent='Completed';
+      document.getElementById('nextBtn').textContent='Restart';
+      document.getElementById('nextBtn').onclick=()=>{ curQ=0; document.getElementById('nextBtn').textContent='Next →'; document.getElementById('nextBtn').onclick=nextQuestion; loadQuestion(0); };
+      showToast('🎉 Test complete! Score: 80%');
+    }
+  }
+
+  loadQuestion(0);
+
+  /* ── SEARCH ENGINE ── */
+  const remedies=[
+    { name:'Nux Vomica', title:'Gastric complaints with Irritability', text:'Indicated in gastritis with anger, constipation, oversensitivity. Worse morning, cold. Better warmth, rest.', ref:'📚 Boericke\'s Materia Medica | Kent Repertory: MIND — Irritability', tags:['gastritis','anger','irritability','constipation','nux'] },
+    { name:'Pulsatilla', title:'Mild, Yielding — Consolation Ameliorates', text:'Weeping child who wants company. Changeable symptoms. Thirstless. Worse warm room, better open air.', ref:'📚 Kent Materia Medica | Rubric: MIND — Weeping, consolation ameliorates', tags:['weeping','child','consolation','mild','pulsatilla','thirstless'] },
+    { name:'Arsenicum Album', title:'Anxiety with Restlessness — Burning Pains', text:'Anxious, restless, fastidious. Burning relieved by heat. Worse 1-3am. Food poisoning.', ref:'📚 Hahnemann — Chronic Diseases | Kent MM | Rubric: MIND — Anxiety, health', tags:['anxiety','restless','burning','exam','arsenicum','fear'] },
+    { name:'Bryonia', title:'Worse Any Motion — Dry Mucus Membranes', text:'Any motion aggravates. Great thirst for large quantities. Stitching pains. Irritable. Wants to go home.', ref:'📚 Kent Materia Medica — Bryonia | GENERALS — Motion, agg.', tags:['fever','thirst','motion','bryonia','stitching'] },
+    { name:'Belladonna', title:'Sudden Violent Onset — High Fever', text:'Sudden onset, throbbing pain, high fever with redness. Dilated pupils. No thirst. Worse 3pm.', ref:'📚 Boericke + Kent Materia Medica — Belladonna | FEVER — Sudden', tags:['fever','sudden','headache','belladonna','sun','throbbing'] },
+    { name:'Natrum Muriaticum', title:'Exam Anxiety — Consolation Aggravates', text:'Introvert, closed, grief. Consolation aggravates. Headache from sunrise to sunset. Craves salt.', ref:'📚 Kent Materia Medica — Natrum Mur | MIND — Consolation, agg.', tags:['anxiety','exam','headache','natrum','grief','sun','consolation'] },
+  ];
+
+  function doSearch(){
+    const q=document.getElementById('searchBox').value.toLowerCase().trim();
+    if(!q) return;
+    const results=remedies.filter(r=>r.tags.some(t=>q.includes(t))||r.name.toLowerCase().includes(q)||r.title.toLowerCase().includes(q));
+    renderResults(results.length?results:remedies.slice(0,2));
+  }
+  function quickSearch(term){ document.getElementById('searchBox').value=term; doSearch(); }
+  function renderResults(arr){
+    const el=document.getElementById('searchResults');
+    el.innerHTML=arr.map(r=>`
+      <div class="result-card">
+        <div class="result-remedy">${r.name}</div>
+        <div class="result-detail">
+          <div class="result-title">${r.title}</div>
+          <div class="result-text">${r.text}</div>
+          <div class="result-ref">${r.ref}</div>
+        </div>
+      </div>`).join('');
+  }
+</script>
+</body>
+</html>
