@@ -492,6 +492,7 @@ export default function Home() {
           <div><div className="logo-text">DSW Med-Learn</div><div className="logo-sub">Dr. Sagathiya Wellness</div></div>
         </div>
         <ul className="nav-links">
+          <li><a href="/library" onClick={e => { e.preventDefault(); window.location.href = '/library'; }}>📚 Library</a></li>
           <li><a href="#modules" onClick={e => { e.preventDefault(); scrollToSection('modules'); }}>Modules</a></li>
           <li><a href="#ai" onClick={e => { e.preventDefault(); scrollToSection('ai'); }}>AI Assistant</a></li>
           <li><a href="#exam" onClick={e => { e.preventDefault(); scrollToSection('exam'); }}>Exam</a></li>
@@ -538,7 +539,7 @@ export default function Home() {
           <div className="modules-grid">
             {[
               { icon: '🧠', title: 'AI Study Assistant', desc: 'Ask any homeopathy question — get answers with book references from Kent, Boericke & Hahnemann.', tag: '✦ Premium', featured: true },
-              { icon: '📚', title: 'Digital Library', desc: 'Organon of Medicine, Materia Medica Pura, EPMD and more — with bookmarks & highlights.', tag: 'Free Access' },
+              { icon: '📚', title: 'Digital Library', desc: 'Organon of Medicine, Materia Medica Pura, EPMD and more — with bookmarks & highlights.', tag: 'Free Access', link: '/library' },
               { icon: '🧪', title: 'MCQ Exam Engine', desc: '500 questions with timer, auto-scoring, weak topic detection and performance analytics.', tag: '✦ Premium' },
               { icon: '🔍', title: 'Therapeutic Search', desc: 'Search by disease, symptom or remedy. Like Google — but for homeopathy. Instant results.', tag: 'Free Access' },
               { icon: '📖', title: 'Kent Repertory', desc: 'Full rubric search, reverse search, remedy comparison with weighted grading — software-grade.', tag: '✦ Premium' },
@@ -547,7 +548,7 @@ export default function Home() {
               { icon: '🏥', title: 'Online Consultation', desc: 'Student-to-patient consultation module with doctor verification and appointment booking.', tag: 'Coming Soon' },
               { icon: '📜', title: 'Homeopathy History', desc: "Hahnemann's life, miasm theory, evolution timeline, classical practitioners database.", tag: 'Free Access' },
             ].map((m, i) => (
-              <div key={i} className={`module-card${m.featured ? ' featured' : ''}`}>
+              <div key={i} className={`module-card${m.featured ? ' featured' : ''}`} onClick={() => { if ((m as any).link) window.location.href = (m as any).link; }} style={(m as any).link ? { cursor: 'pointer' } : {}}>
                 <div className="module-icon">{m.icon}</div>
                 <h3>{m.title}</h3><p>{m.desc}</p>
                 <span className={`module-tag${m.tag.includes('Premium') ? ' premium' : ''}`}>{m.tag}</span>
@@ -701,7 +702,7 @@ export default function Home() {
             <div className="nav-logo"><div className="logo-icon"><img src="/logo.png" alt="DSW Med-Learn Logo" /></div><div><div className="logo-text">DSW Med-Learn</div><div className="logo-sub">Dr. Sagathiya Wellness</div></div></div>
             <p>India&apos;s most comprehensive homeopathy education platform — built for BHMS students, interns and practitioners.</p>
           </div>
-          <div className="footer-col"><h4>Platform</h4><ul><li><a href="#">AI Assistant</a></li><li><a href="#">MCQ Engine</a></li><li><a href="#">Repertory</a></li><li><a href="#">Digital Library</a></li><li><a href="#">Case System</a></li></ul></div>
+          <div className="footer-col"><h4>Platform</h4><ul><li><a href="#">AI Assistant</a></li><li><a href="#">MCQ Engine</a></li><li><a href="#">Repertory</a></li><li><a href="/library">Digital Library</a></li><li><a href="#">Case System</a></li></ul></div>
           <div className="footer-col"><h4>Learn</h4><ul><li><a href="#">Materia Medica</a></li><li><a href="#">Organon</a></li><li><a href="#">Miasm Theory</a></li><li><a href="#">Case Taking</a></li><li><a href="#">Practitioners</a></li></ul></div>
           <div className="footer-col"><h4>Support</h4><ul><li><a href="#">About DSW</a></li><li><a href="#">Contact Us</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Razorpay Billing</a></li></ul></div>
         </div>
