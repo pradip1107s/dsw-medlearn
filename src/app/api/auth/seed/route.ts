@@ -32,7 +32,10 @@ export async function POST() {
     ];
 
     for (const s of students) {
-      await db.user.create({ data: s });
+      const existing = await db.user.findUnique({ where: { email: s.email } });
+      if (!existing) {
+        await db.user.create({ data: s });
+      }
     }
 
     return NextResponse.json({

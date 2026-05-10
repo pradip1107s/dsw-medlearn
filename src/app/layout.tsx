@@ -22,8 +22,8 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "DSW Med-Learn | Dr. Sagathiya Wellness Platform",
-  description:
-    "India's #1 Homeopathy Ed-Tech Platform — AI study assistant, 500+ MCQs, digital library, Kent repertory, case management & live doctor consultations for BHMS students.",
+  description: "India's #1 Homeopathy Ed-Tech Platform — AI study assistant, 500+ MCQs, digital library, Kent repertory & more for BHMS students.",
+  icons: { icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" },
 };
 
 export default function RootLayout({
@@ -35,7 +35,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${playfair.variable} ${dmSans.variable} ${jetbrains.variable} antialiased`}
-        style={{ background: "#0d2b1f", color: "#f5f0e8", margin: 0 }}
+        style={{ background: "#0d2b1f", color: "#f5f0e8", fontFamily: "'DM Sans', sans-serif" }}
       >
         {children}
       </body>
