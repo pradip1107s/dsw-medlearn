@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -88,8 +89,6 @@ model Remedy {
   clinicalUses        String?
   dosage              String?
   rubrics             Rubric[]
-  bookmarks           Bookmark[]
-  notes               UserNote[]
 }
 
 model Rubric {
@@ -113,8 +112,6 @@ model ClinicalCase {
   finalRemedy           String?
   followUpNotes         String?
   tags                  String?
-  bookmarks             Bookmark[]
-  notes                 UserNote[]
 }
 
 model DiseaseTemplate {
@@ -173,21 +170,17 @@ model Bookmark {
   itemId    String
   label     String?
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  remedy    Remedy?  @relation(fields: [itemId], references: [id])
-  case      ClinicalCase? @relation(fields: [itemId], references: [id])
   createdAt DateTime @default(now())
 }
 
 model UserNote {
-  id             String   @id @default(cuid())
-  userId         String
-  type           String
-  itemId         String
-  content        String
+  id              String   @id @default(cuid())
+  userId          String
+  type            String
+  itemId          String
+  content         String
   highlightedText String?
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  remedy         Remedy?  @relation(fields: [itemId], references: [id])
-  case           ClinicalCase? @relation(fields: [itemId], references: [id])
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
