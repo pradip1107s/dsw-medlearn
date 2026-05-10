@@ -1,31 +1,22 @@
 ---
-Task ID: 1
+Task ID: deploy-vercel
 Agent: Main Agent
-Task: Implement Digital Library module for DSW Med-Learn platform
+Task: Deploy DSW Med-Learn to Vercel with Neon Postgres database
 
 Work Log:
-- Checked current project state: schema already has Library tables, API routes exist for library
-- Fixed `db.bhmsNote` → `db.bHMSNote` casing in library API routes and seed route
-- Created `/home/z/my-project/src/app/library/page.tsx` - full Digital Library page with:
-  - 12 section cards (Organon, Materia Medica, Repertory, Chronic Diseases, Philosophy, Therapeutics, Clinical Cases, Disease Templates, Remedy Relationships, Miasm Library, BHMS Notes, Question Bank)
-  - Global search across all sections with debounced input
-  - Section detail overlay with in-section search/filter
-  - Reading pane with full content display for each item type
-  - Bookmark and note-taking UI
-  - Stats bar, filter chips (All/Free/Premium)
-  - Back to home navigation
-  - Matches existing dark forest/nature design theme
-- Added "📚 Library" link to main page navigation
-- Made Digital Library module card clickable (navigates to /library)
-- Updated footer "Digital Library" link to point to /library
-- Seeded all library data: 12 sections, 10 remedies, 7 aphorisms, 11 rubrics, 9 books, 6 chapters, 6 therapeutics, 3 clinical cases, 3 disease templates, 4 miasm notes, 6 BHMS notes, 8 questions
-- Fixed db.ts: removed global Prisma singleton caching, reduced log level
-- Fixed next.config.ts: removed `output: "standalone"` which was causing production issues
-- Verified build succeeds and all routes compile
+- Updated .env with Neon Postgres connection string
+- Prisma schema was already set to postgresql provider with url and directUrl
+- Ran prisma db push to sync schema to Neon Postgres database
+- Seeded auth data: 1 admin + 4 demo students
+- Seeded library data: 12 sections, 10 books, 6 chapters, 7 aphorisms, 10 remedies, 6 therapeutics, 3 clinical cases, 3 disease templates, 4 miasm notes, 6 BHMS notes, 8 question bank items
+- Installed Vercel CLI v53.3.1
+- Linked project to Vercel (pradip-sagathiya-s-projects/dsw-medlearn)
+- Added environment variables (DATABASE_URL, DIRECT_URL, NEXTAUTH_SECRET, NEXTAUTH_URL) to production, preview, development
+- Built project successfully with Next.js 16.1.3
+- Deployed to Vercel production
 
 Stage Summary:
-- Digital Library module fully implemented at /library
-- 12 sections with rich data and search
-- Navigation links added to main page nav, module card, and footer
-- All API endpoints functional: GET /api/library, GET /api/library?section=X, GET /api/library?search=X, GET /api/library/item
-- Database seeded with comprehensive homeopathy data
+- Live site: https://dsw-medlearn.vercel.app
+- Database: Neon Postgres (ep-holy-cell-aouw205c.c-2.ap-southeast-1.aws.neon.tech/neondb)
+- All API endpoints tested and working: /api/library, /api/auth/admin, /api/auth/login
+- Build time: ~35s on Vercel
