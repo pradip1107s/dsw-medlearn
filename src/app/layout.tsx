@@ -23,7 +23,7 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "DSW Med-Learn | Dr. Sagathiya Wellness Platform",
   description: "India's #1 Homeopathy Ed-Tech Platform — AI study assistant, 500+ MCQs, digital library, Kent repertory & more for BHMS students.",
-  icons: { icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" },
+  icons: { icon: "/logo.png" },
 };
 
 export default function RootLayout({

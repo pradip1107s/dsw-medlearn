@@ -11,7 +11,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--forest)}::-webkit-scrollbar-thumb{background:var(--emerald);border-radius:2px}
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 4rem;display:flex;align-items:center;justify-content:space-between;background:rgba(13,43,31,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(58,170,122,0.1)}
 .nav-logo{display:flex;align-items:center;gap:0.75rem}
-.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--emerald),var(--gold));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.logo-icon{width:38px;height:38px;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center}.logo-icon img{width:100%;height:100%;object-fit:cover;border-radius:10px}
 .logo-text{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;background:linear-gradient(135deg,var(--emerald),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .logo-sub{font-size:0.65rem;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase}
 .nav-links{display:flex;gap:2rem;list-style:none}.nav-links a{color:rgba(245,240,232,0.7);text-decoration:none;font-size:0.875rem;font-weight:500;letter-spacing:0.02em;transition:color 0.2s}.nav-links a:hover{color:var(--emerald)}
@@ -93,7 +93,7 @@ footer{background:#040f09;padding:4rem 4rem 2rem;border-top:1px solid rgba(58,17
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}.footer-brand p{font-size:0.85rem;color:var(--muted);line-height:1.7;margin-top:0.75rem;max-width:280px}.footer-col h4{font-size:0.8rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--emerald);margin-bottom:1rem;font-family:'JetBrains Mono',monospace}.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:0.6rem}.footer-col a{color:rgba(245,240,232,0.5);text-decoration:none;font-size:0.85rem;transition:color 0.2s}.footer-col a:hover{color:var(--emerald)}.footer-bottom{border-top:1px solid rgba(255,255,255,0.05);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center}.footer-copy{font-size:0.8rem;color:var(--muted)}.footer-badge{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--emerald);opacity:0.6}
 .admin-overlay{position:fixed;inset:0;background:#060f09;z-index:5000;display:none;flex-direction:column;font-family:'DM Sans',sans-serif}.admin-overlay.open{display:flex;animation:fadeIn 0.25s ease}
 .admin-topbar{background:#0a1f12;border-bottom:1px solid rgba(58,170,122,0.15);padding:0.9rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
-.admin-logo{display:flex;align-items:center;gap:0.6rem}.admin-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--emerald),var(--gold));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem}.admin-logo-text{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--cream)}.admin-badge{font-size:0.65rem;font-family:'JetBrains Mono',monospace;background:rgba(212,168,67,0.15);border:1px solid rgba(212,168,67,0.3);color:var(--gold);padding:0.2rem 0.6rem;border-radius:4px}.admin-user{display:flex;align-items:center;gap:1rem;font-size:0.85rem;color:var(--muted)}.btn-logout{padding:0.4rem 1rem;background:transparent;border:1px solid rgba(224,85,85,0.3);color:#e05555;border-radius:7px;font-size:0.8rem;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}.btn-logout:hover{background:rgba(224,85,85,0.1)}
+.admin-logo{display:flex;align-items:center;gap:0.6rem}.admin-logo-icon{width:32px;height:32px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}.admin-logo-icon img{width:100%;height:100%;object-fit:cover;border-radius:8px}.admin-logo-text{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--cream)}.admin-badge{font-size:0.65rem;font-family:'JetBrains Mono',monospace;background:rgba(212,168,67,0.15);border:1px solid rgba(212,168,67,0.3);color:var(--gold);padding:0.2rem 0.6rem;border-radius:4px}.admin-user{display:flex;align-items:center;gap:1rem;font-size:0.85rem;color:var(--muted)}.btn-logout{padding:0.4rem 1rem;background:transparent;border:1px solid rgba(224,85,85,0.3);color:#e05555;border-radius:7px;font-size:0.8rem;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}.btn-logout:hover{background:rgba(224,85,85,0.1)}
 .admin-body{display:flex;flex:1;overflow:hidden}
 .admin-sidebar{width:220px;background:#0a1f12;border-right:1px solid rgba(58,170,122,0.1);padding:1.5rem 0;display:flex;flex-direction:column;gap:0.25rem;flex-shrink:0;overflow-y:auto}
 .sidebar-section{font-size:0.65rem;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:0.2em;padding:0.75rem 1.5rem 0.3rem}
@@ -488,7 +488,7 @@ export default function Home() {
       {/* ══════ NAV ══════ */}
       <nav>
         <div className="nav-logo">
-          <div className="logo-icon">🌿</div>
+          <div className="logo-icon"><img src="/logo.png" alt="DSW Med-Learn Logo" /></div>
           <div><div className="logo-text">DSW Med-Learn</div><div className="logo-sub">Dr. Sagathiya Wellness</div></div>
         </div>
         <ul className="nav-links">
@@ -572,7 +572,7 @@ export default function Home() {
           </div>
           <div className="ai-chat-window">
             <div className="chat-header">
-              <div className="chat-avatar">🌿</div>
+              <div className="chat-avatar"><img src="/logo.png" alt="Logo" style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:'50%'}} /></div>
               <div><div className="chat-name">DSW AI Assistant</div><div className="chat-status"><span className="dot-live"></span>Online — Homeopathy Mode</div></div>
             </div>
             <div className="chat-messages">
@@ -698,7 +698,7 @@ export default function Home() {
       <footer>
         <div className="footer-grid">
           <div className="footer-brand">
-            <div className="nav-logo"><div className="logo-icon">🌿</div><div><div className="logo-text">DSW Med-Learn</div><div className="logo-sub">Dr. Sagathiya Wellness</div></div></div>
+            <div className="nav-logo"><div className="logo-icon"><img src="/logo.png" alt="DSW Med-Learn Logo" /></div><div><div className="logo-text">DSW Med-Learn</div><div className="logo-sub">Dr. Sagathiya Wellness</div></div></div>
             <p>India&apos;s most comprehensive homeopathy education platform — built for BHMS students, interns and practitioners.</p>
           </div>
           <div className="footer-col"><h4>Platform</h4><ul><li><a href="#">AI Assistant</a></li><li><a href="#">MCQ Engine</a></li><li><a href="#">Repertory</a></li><li><a href="#">Digital Library</a></li><li><a href="#">Case System</a></li></ul></div>
@@ -788,7 +788,7 @@ export default function Home() {
       {/* ══════ ADMIN DASHBOARD ══════ */}
       <div className={`admin-overlay${adminOpen ? ' open' : ''}`}>
         <div className="admin-topbar">
-          <div className="admin-logo"><div className="admin-logo-icon">🌿</div><div className="admin-logo-text">DSW Med-Learn</div><div className="admin-badge">ADMIN PANEL</div></div>
+          <div className="admin-logo"><div className="admin-logo-icon"><img src="/logo.png" alt="DSW Med-Learn Logo" /></div><div className="admin-logo-text">DSW Med-Learn</div><div className="admin-badge">ADMIN PANEL</div></div>
           <div className="admin-user"><span>👤 Dr. Sagathiya &nbsp;|&nbsp; <span style={{color:'var(--emerald)'}}>● Online</span></span><button className="btn-logout" onClick={() => setAdminOpen(false)}>Logout</button></div>
         </div>
         <div className="admin-body">
